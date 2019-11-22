@@ -4,7 +4,8 @@ const TASK_COUNT = 4;
 
 const createSiteMenuTemplate = () => {
   return (
-    `<nav class="trip-controls__trip-tabs  trip-tabs">
+    `<h2 class="visually-hidden">Switch trip view</h2>
+     <nav class="trip-controls__trip-tabs  trip-tabs">
         <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
         <a class="trip-tabs__btn" href="#">Stats</a>
      </nav>`
@@ -13,7 +14,8 @@ const createSiteMenuTemplate = () => {
 
 const createFiltersTemplate = () => {
   return (
-    `<form class="trip-filters" action="#" method="get">
+    `<h2 class="visually-hidden">Filter events</h2>
+     <form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
         <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
         <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
@@ -84,7 +86,7 @@ const createTripDayContainerTemplate = () => {
   );
 };
 
-const createEditEventTamplate = () => {
+const createEditEventTemplate = () => {
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
         <header class="event__header">
@@ -324,15 +326,13 @@ const render = (container, template, place) => {
 const siteRouteElement = document.querySelector(`.trip-main__trip-info`);
 render(siteRouteElement, createTripInfoTemplate(), `afterbegin`);
 
-const siteMenuContainer = document.querySelector(`.trip-controls>h2`);
-render(siteMenuContainer, createSiteMenuTemplate(), `afterend`);
-
-const siteFilterContainer = document.querySelector(`.trip-controls`);
-render(siteFilterContainer, createFiltersTemplate(), `beforeend`);
+const siteMenuContainer = document.querySelector(`.trip-controls`);
+render(siteMenuContainer, createSiteMenuTemplate(), `beforeend`);
+render(siteMenuContainer, createFiltersTemplate(), `beforeend`);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 render(siteContentContainer, createSortTemplate(), `beforeend`);
-render(siteContentContainer, createEditEventTamplate(), `beforeend`);
+render(siteContentContainer, createEditEventTemplate(), `beforeend`);
 render(siteContentContainer, createTripContainerTemplate(), `beforeend`);
 
 const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
