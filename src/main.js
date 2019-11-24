@@ -3,10 +3,10 @@ import {createFiltersTemplate} from './components/filters.js';
 import {createSortTemplate} from './components/sorter.js';
 import {createEditEventTemplate} from './components/event-editor.js';
 import {createTripInfoTemplate} from './components/trip-info.js';
-import {createTripContainerTemplate} from './components/content.js';
-import {createTripDayContainerTemplate} from './components/content.js';
-import {createTripEventTemplate} from './components/content.js';
-import {createEventItemTemplate} from './components/content.js';
+import {createTripContainerTemplate} from './components/trip-container.js';
+import {createTripDayContainerTemplate} from './components/day-container.js';
+import {createTripEventTemplate} from './components/trip-events.js';
+import {createEventItemTemplate} from './components/event.js';
 
 const TASK_COUNT = 2;
 
