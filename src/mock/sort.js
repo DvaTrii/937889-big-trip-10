@@ -1,20 +1,14 @@
 export const sorter = [
   {
-    sortBy: `Day`
-  },
-  {
     sortBy: `Event`,
     isChecked: true
   },
   {
     sortBy: `Time`,
-    isChecked: true
+    isChecked: false
   },
   {
     sortBy: `Price`,
-    isChecked: true
-  },
-  {
-    sortBy: `Offers`
+    isChecked: false
   },
 ];

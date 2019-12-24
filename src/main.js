@@ -8,6 +8,7 @@ import {createTripDayContainerTemplate} from './components/day-container.js';
 import {createTripEventTemplate} from './components/trip-events.js';
 import {createEventItemTemplate} from './components/event.js';
 import {filters} from "./mock/filter";
+import {sorter} from "./mock/sort";
 
 const TASK_COUNT = 2;
 
@@ -23,7 +24,7 @@ render(siteMenuContainer, createSiteMenuTemplate(), `beforeend`);
 render(siteMenuContainer, createFiltersTemplate(filters), `beforeend`);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
-render(siteContentContainer, createSortTemplate(), `beforeend`);
+render(siteContentContainer, createSortTemplate(sorter), `beforeend`);
 render(siteContentContainer, createEditEventTemplate(), `beforeend`);
 render(siteContentContainer, createTripContainerTemplate(), `beforeend`);
 
