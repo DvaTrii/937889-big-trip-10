@@ -50,7 +50,7 @@ const mock = {
     `In rutrum ac purus sit amet tempus.`,
     `Aliquam erat volutpat.`,
     `Nunc fermentum tortor ac porta dapibus.`
-  ]
+  ],
 };
 
 const getRandomNumber = (min, max) => {

@@ -1,4 +1,4 @@
-const filters = [
+export const filters = [
   {
     name: `Everything`,
     isChecked: true

@@ -7,6 +7,7 @@ import {createTripContainerTemplate} from './components/trip-container.js';
 import {createTripDayContainerTemplate} from './components/day-container.js';
 import {createTripEventTemplate} from './components/trip-events.js';
 import {createEventItemTemplate} from './components/event.js';
+import {filters} from "./mock/filter";
 
 const TASK_COUNT = 2;
 
@@ -19,7 +20,7 @@ render(siteRouteElement, createTripInfoTemplate(), `afterbegin`);
 
 const siteMenuContainer = document.querySelector(`.trip-controls`);
 render(siteMenuContainer, createSiteMenuTemplate(), `beforeend`);
-render(siteMenuContainer, createFiltersTemplate(), `beforeend`);
+render(siteMenuContainer, createFiltersTemplate(filters), `beforeend`);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 render(siteContentContainer, createSortTemplate(), `beforeend`);
