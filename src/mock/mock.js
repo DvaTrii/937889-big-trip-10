@@ -119,8 +119,9 @@ const generateTripEvent = () => {
 const generateTripEvents = (amount) => {
   return Array(amount)
     .fill(``)
-    .map(() => {generateTripEvent()})
+    .map(() => generateTripEvent())
     .sort((prevCard, nextCard) => prevCard.startDate - nextCard.startDate);
 };
 
 export const tripEvents = generateTripEvents(EVENTS_AMOUNT);
+

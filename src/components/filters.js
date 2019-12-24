@@ -14,7 +14,6 @@ const createFilterMarkup = (filter) =>{
 };
 
 export const createFiltersTemplate = (filters) => {
-console.log(typeof(filters));
   const filtersMarkup = filters.map((it) => createFilterMarkup(it)).join(`\n`);
 
   return (
