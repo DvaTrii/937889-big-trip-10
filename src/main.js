@@ -11,7 +11,7 @@ import {filters} from "./mock/filter";
 import {sorter} from "./mock/sort";
 import {tripEvents} from "./mock/mock";
 
-const TASK_COUNT = 2;
+const EVENTS_COUNT = 4;
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -26,12 +26,12 @@ render(siteMenuContainer, createFiltersTemplate(filters), `beforeend`);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 render(siteContentContainer, createSortTemplate(sorter), `beforeend`);
-render(siteContentContainer, createEditEventTemplate(), `beforeend`);
+render(siteContentContainer, createEditEventTemplate(tripEvents[0]), `beforeend`);
 render(siteContentContainer, createTripContainerTemplate(), `beforeend`);
 
 const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
 
-new Array(TASK_COUNT)
+new Array(EVENTS_COUNT)
   .fill(``)
   .forEach(
       () => render(siteEventsContainer, createTripDayContainerTemplate(), `beforeend`)
@@ -48,8 +48,8 @@ const siteTripEventList = document.querySelectorAll(`.trip-events__list`);
 
 Array.from(siteTripEventList)
   .forEach(
-      (it) => new Array(TASK_COUNT)
-      .fill(``)
+      (it) => new Array(EVENTS_COUNT)
+      .fill(`<li class="trip-events__item"></li>`)
       .forEach(
           () => render(it, createEventItemTemplate(), `beforeend`)
       )

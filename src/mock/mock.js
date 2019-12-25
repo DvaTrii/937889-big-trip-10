@@ -4,34 +4,34 @@ const OFFERS_AMOUNT = 3;
 const mock = {
   offers: [
     {
-      type: `luggage`,
+      offerType: `luggage`,
       title: `Add luggage`,
-      price: `10`,
-      checked: `true`
+      offerPrice: `10`,
+      isChecked: true
     },
     {
-      type: `comfort`,
+      offerType: `comfort`,
       title: `Switch to comfort class`,
-      price: `150`,
-      checked: `false`
+      offerPrice: `150`,
+      isChecked: false
     },
     {
-      type: `meal`,
+      offerType: `meal`,
       title: `Add meal`,
-      price: `12`,
-      checked: `false`
+      offerPrice: `12`,
+      isChecked: false
     },
     {
-      type: `seats`,
+      offerType: `seats`,
       title: `Choose seats`,
-      price: `5`,
-      checked: `true`
+      offerPrice: `5`,
+      isChecked: true
     },
     {
-      type: `train`,
+      offerType: `train`,
       title: `Travel by train`,
-      price: `35`,
-      checked: `false`
+      offerPrice: `35`,
+      isChecked: false
     }
   ],
   cities: [`Amsteradam`, `Geneva`, `Paris`, `Milan`, `Roma`, `Lisbon`, `Barcelona`, `Valencia`, `Munster`],
@@ -125,3 +125,6 @@ const generateTripEvents = (amount) => {
 
 export const tripEvents = generateTripEvents(EVENTS_AMOUNT);
 
+export const dates = [
+  ...new Set(tripEvents.map((it) => new Date(it.startDate).toDateString()))
+];
