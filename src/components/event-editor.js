@@ -1,13 +1,7 @@
+import {dateGoodLooking} from "../utils";
+
 export const createEditEventTemplate = (tripEvent) => {
   const {type, place, startDate, endDate, price, offers, description, photos} = tripEvent;
-
-  const dateGoodLooking = (date) => {
-    if (date < 10) {
-      date = `0` + date;
-    }
-
-    return date;
-  };
 
   let startDay = new Date(startDate).getDate();
   dateGoodLooking(startDay);
@@ -24,7 +18,7 @@ export const createEditEventTemplate = (tripEvent) => {
   dateGoodLooking(endDay);
   let endMonth = new Date(endDate).getMonth() + 1;
   dateGoodLooking(endMonth);
-  let endYear = new Date(endDate).getFullYear();
+  let endYear = new Date(endDate).getFullYear() % 100;
   dateGoodLooking(endYear);
   let endHour = new Date(endDate).getHours();
   dateGoodLooking(endHour);

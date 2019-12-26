@@ -12,7 +12,7 @@ const mock = {
     {
       offerType: `comfort`,
       title: `Switch to comfort class`,
-      offerPrice: `150`,
+      offerPrice: `15`,
       isChecked: false
     },
     {
@@ -128,3 +128,4 @@ export const tripEvents = generateTripEvents(EVENTS_AMOUNT);
 export const dates = [
   ...new Set(tripEvents.map((it) => new Date(it.startDate).toDateString()))
 ];
+
