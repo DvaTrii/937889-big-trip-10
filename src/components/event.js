@@ -1,19 +1,22 @@
+import {getNormDate} from "../utils";
+
 export const createEventItemTemplate = (dayEvent) => {
   const {type, place, startDate, endDate, price, offers} = dayEvent;
-  const start = new Date(startDate).toDateString();
-  const end = new Date(endDate).toDateString();
+
+  //  дата для event-time
+  const castDateTime = (data) => {
+    const [date, month, year, hours, minutes] = getNormDate(data);
+    return `${year}-${month}-${date}T${hours}:${minutes}`;
+  };
 
   const createOfferMarkup = (offer) => {
-    const {offerType, title, offerPrice, isChecked} = offer;
-    if (isChecked) {
-      return (
-        `<li class="event__offer">
+    const {title, offerPrice, isChecked} = offer;
+    return (isChecked ?
+      `<li class="event__offer">
           <span class="event__offer-title">${title}</span>
           &plus;
           &euro;&nbsp;<span class="event__offer-price">${offerPrice}</span>
-       </li>`
-      );
-    }
+       </li>` : ``);
   };
 
   const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
@@ -28,9 +31,9 @@ export const createEventItemTemplate = (dayEvent) => {
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${start}">10:30</time>
+          <time class="event__start-time" datetime="${castDateTime(startDate)}">10:30</time>
           &mdash;
-          <time class="event__end-time" datetime="${end}">11:00</time>
+          <time class="event__end-time" datetime="${castDateTime(endDate)}">11:00</time>
         </p>
         <p class="event__duration">1H 30M</p>
       </div>

@@ -1,29 +1,8 @@
-import {dateGoodLooking} from "../utils";
+import {getNormDate} from "../utils";
+
 
 export const createEditEventTemplate = (tripEvent) => {
   const {type, place, startDate, endDate, price, offers, description, photos} = tripEvent;
-
-  let startDay = new Date(startDate).getDate();
-  dateGoodLooking(startDay);
-  let startMonth = new Date(startDate).getMonth() + 1;
-  dateGoodLooking(startMonth);
-  let startYear = new Date(startDate).getFullYear() % 100;
-  dateGoodLooking(startYear);
-  let startHour = new Date(startDate).getHours();
-  dateGoodLooking(startHour);
-  let startMinutes = new Date(startDate).getMinutes();
-  dateGoodLooking(startMinutes);
-
-  let endDay = new Date(endDate).getDate();
-  dateGoodLooking(endDay);
-  let endMonth = new Date(endDate).getMonth() + 1;
-  dateGoodLooking(endMonth);
-  let endYear = new Date(endDate).getFullYear() % 100;
-  dateGoodLooking(endYear);
-  let endHour = new Date(endDate).getHours();
-  dateGoodLooking(endHour);
-  let endMinutes = new Date(endDate).getMinutes();
-  dateGoodLooking(endMinutes);
 
   const createOfferMarkup = (offer) => {
     const {offerType, title, offerPrice, isChecked} = offer;
@@ -49,6 +28,12 @@ export const createEditEventTemplate = (tripEvent) => {
   };
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
+
+  //  дата для event-edit
+  const formatDateTime = (data) => {
+    const [date, month, year, hours, minutes] = getNormDate(data);
+    return `${date}/${month}/${year % 100} ${hours}:${minutes}`;
+  };
 
   return (
     `<li class="trip-events__item">
@@ -140,13 +125,13 @@ export const createEditEventTemplate = (tripEvent) => {
                 From
               </label>
               <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time"
-              value="${startDay}/${startMonth}/${startYear} ${startHour}:${startMinutes}">
+              value="${formatDateTime(startDate)}">
               &mdash;
               <label class="visually-hidden" for="event-end-time-1">
                 To
               </label>
               <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time"
-              value="${endDay}/${endMonth}/${endYear} ${endHour}:${endMinutes}">
+              value="${formatDateTime(endDate)}">
             </div>
 
             <div class="event__field-group  event__field-group--price">
