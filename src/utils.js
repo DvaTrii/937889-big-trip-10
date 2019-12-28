@@ -5,3 +5,13 @@ export const dateGoodLooking = (date) => {
 
   return date;
 };
+
+export const createElement = (template) => {
+  const el = document.createElement(`div`);
+  el.innerHTML = template;
+  return el.firstChild;
+};
+
+export const renderElement = (container, element) => {
+  return container.appendChild(element);
+};

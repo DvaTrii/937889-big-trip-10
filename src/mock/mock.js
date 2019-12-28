@@ -13,7 +13,7 @@ const mock = {
       offerType: `comfort`,
       title: `Switch to comfort class`,
       offerPrice: `15`,
-      isChecked: false
+      isChecked: true
     },
     {
       offerType: `meal`,
@@ -31,7 +31,7 @@ const mock = {
       offerType: `train`,
       title: `Travel by train`,
       offerPrice: `35`,
-      isChecked: false
+      isChecked: true
     }
   ],
   cities: [`Amsteradam`, `Geneva`, `Paris`, `Milan`, `Roma`, `Lisbon`, `Barcelona`, `Valencia`, `Munster`],
@@ -71,15 +71,6 @@ const getRandomDescription = () => {
     .join(` `);
 };
 
-// const getRandomDescription = (array) => {
-//   let fullDescription = [];
-//   for (let i = 0; i <= Math.random() * 2; i++) {
-//     fullDescription[i] = array[Math.floor(Math.random() * (array.length - 1))];
-//     fullDescription.push(fullDescription[i]);
-//   }
-//   return fullDescription.join(` `);
-// };
-
 const getRandomArrayItem = (arr) => arr[Math.floor(Math.random() * (arr.length - 1))];
 
 const getRandomDate = () => {
@@ -89,15 +80,6 @@ const getRandomDate = () => {
 };
 
 const getRandomPhoto = () => `http://picsum.photos/300/150?r=${Math.random()}`;
-
-// const getRandomOffers = (array, amount = getRandomNumber(0, 2)) => {
-//   let offers = [];
-//   for (let i = 0; i <= amount; i++) {
-//     offers[i] = array[Math.floor(Math.random() * (array.length - 1))];
-//     offers.push(offers[i]);
-//   }
-//   return new Set(offers);
-// };
 
 const generateTripEvent = () => {
   const startDate = getRandomDate();
