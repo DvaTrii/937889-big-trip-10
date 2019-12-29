@@ -1,9 +1,23 @@
-export const createTripInfoTemplate = () => {
+import {monthNames} from "../const";
+
+export const createTripInfoTemplate = (data) => {
+  const places = data.map((it) => it.place);
+  const startDates = data.map((it) => new Date(it.startDate).getDate());
+  const endDates = data.map((it) => new Date(it.endDate).getDate());
+  const months = data.map((it) => monthNames[new Date(it.endDate).getMonth()]);
+  const price = data.map((it) => it.price).reduce((acc, cur) => acc + cur);
+
   return (
     `<div class="trip-info__main">
-      <h1 class="trip-info__title">Amsterdam &mdash; ... &mdash; Amsterdam</h1>
+      <h1 class="trip-info__title">${places[0]} &mdash; ... &mdash; ${places[places.length - 1]}</h1>
 
-      <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
-    </div>`
+      <p class="trip-info__dates">${months[0]}&nbsp;
+                                  ${startDates[0]}&nbsp;&mdash;&nbsp;
+                                  ${(months[0] === months[months.length - 1]) ? `` : months[months.length - 1] + ` `}
+                                  ${endDates[endDates.length - 1]}</p>
+    </div>
+    <p class="trip-info__cost">
+              Total: &euro;&nbsp;<span class="trip-info__cost-value">${price}</span>
+    </p>`
   );
 };
