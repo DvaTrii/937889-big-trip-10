@@ -1,13 +1,7 @@
-import {getNormDate} from "../utils";
+import {castDateTime} from "../utils";
 
 export const createEventItemTemplate = (dayEvent) => {
   const {type, place, startDate, endDate, price, offers} = dayEvent;
-
-  //  дата для event-time
-  const castDateTime = (data) => {
-    const [date, month, year, hours, minutes] = getNormDate(data);
-    return `${year}-${month}-${date}T${hours}:${minutes}`;
-  };
 
   const createOfferMarkup = (offer) => {
     const {title, offerPrice, isChecked} = offer;

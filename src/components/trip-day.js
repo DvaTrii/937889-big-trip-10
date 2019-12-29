@@ -1,18 +1,6 @@
-import {monthNames} from "../const";
-import {getDateFromStr} from "../utils";
+import {castDate, castomDate} from "../utils";
 
 export const createTripDayContainerTemplate = (date, dayIndex) => {
-  //  дата для daydate контейнера дня
-  const castDate = (data) => {
-    const [dateNum, month, year] = getDateFromStr(data);
-    return `${year}-${month + 1}-${dateNum}`;
-  };
-
-  //  дата для разметки дня с индексом
-  const castomDate = (data) => {
-    const [dateNum, month] = getDateFromStr(data);
-    return `${monthNames[month]} ${dateNum}`;
-  };
   return (
     `<li class="trip-days__item  day">
         <div class="day__info">

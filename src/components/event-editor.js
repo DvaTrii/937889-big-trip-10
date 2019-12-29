@@ -1,4 +1,4 @@
-import {getNormDate} from "../utils";
+import {formatDateTime} from "../utils";
 
 
 export const createEditEventTemplate = (tripEvent) => {
@@ -28,12 +28,6 @@ export const createEditEventTemplate = (tripEvent) => {
   };
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
-
-  //  дата для event-edit
-  const formatDateTime = (data) => {
-    const [date, month, year, hours, minutes] = getNormDate(data);
-    return `${date}/${month}/${year % 100} ${hours}:${minutes}`;
-  };
 
   return (
     `<li class="trip-events__item">
