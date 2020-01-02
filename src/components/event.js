@@ -1,6 +1,6 @@
-import {castDateTime} from "../utils";
+import {castDateTime, createElement} from "../utils";
 
-export const createEventItemTemplate = (dayEvent) => {
+const createEventItemTemplate = (dayEvent) => {
   const {type, place, startDate, endDate, price, offers} = dayEvent;
 
   const createOfferMarkup = (offer) => {
@@ -48,4 +48,27 @@ export const createEventItemTemplate = (dayEvent) => {
     </li>`
   );
 };
+
+export default class Event {
+  constructor(dayEvent) {
+    this._dayEvent = dayEvent;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventItemTemplate(this._dayEvent);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 
