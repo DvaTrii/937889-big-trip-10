@@ -1,6 +1,6 @@
 import {createElement} from "../utils";
 
-export const createTripContainerTemplate = () => {
+const createTripContainerTemplate = () => {
   return (`<ul class="trip-days"></ul>`);
 };
 

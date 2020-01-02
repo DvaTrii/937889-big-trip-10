@@ -1,6 +1,7 @@
 import {monthNames} from "../const";
+import {createElement} from "../utils";
 
-export const createTripInfoTemplate = (data) => {
+const createTripInfoTemplate = (data) => {
   const places = data.map((it) => it.place);
   const startDates = data.map((it) => new Date(it.startDate).getDate());
   const endDates = data.map((it) => new Date(it.endDate).getDate());
@@ -21,3 +22,26 @@ export const createTripInfoTemplate = (data) => {
     </p>`
   );
 };
+
+export default class TripInfo {
+  constructor(data) {
+    this._data = data;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripInfoTemplate(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

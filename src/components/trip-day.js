@@ -1,6 +1,6 @@
 import {castDate, castomDate, createElement} from "../utils";
 
-export const createTripDayTemplate = (date, dayIndex) => {
+const createTripDayTemplate = (date, dayIndex) => {
   return (
     `<li class="trip-days__item  day">
         <div class="day__info">

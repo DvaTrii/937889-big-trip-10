@@ -25,7 +25,7 @@ const createSortItemMarkup = (sortItem) => {
   );
 };
 
-export const createSortTemplate = (sorter) => {
+const createSortTemplate = (sorter) => {
   const sorterMarkup = sorter.map((it) => createSortItemMarkup(it)).join(`\n`);
 
   return (
