@@ -56,10 +56,10 @@ export const createElement = (template) => {
   el.innerHTML = template;
   return el.firstChild;
 };
-
-export const renderElement = (container, element) => {
-  return container.appendChild(element);
-};
+//
+// export const renderElement = (container, element) => {
+//   return container.appendChild(element);
+// };
 
 export const render = (container, element, place) => {
   switch (place) {
