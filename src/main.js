@@ -1,11 +1,3 @@
-// import {createSiteMenuTemplate} from './components/site-menu.js';
-// import {createFiltersTemplate} from './components/filters.js';
-// import {createSortTemplate} from './components/sorter.js';
-// import {createEditEventTemplate} from './components/event-editor.js';
-// import {createTripInfoTemplate} from './components/trip-info.js';
-// import {createTripContainerTemplate} from './components/trip-container.js';
-// import {createTripDayTemplate} from './components/trip-day.js';
-// import {createEventItemTemplate} from './components/event.js';
 import TripInfo from "./components/trip-info";
 import SiteMenu from "./components/site-menu";
 import Filter from "./components/filters";
@@ -33,14 +25,29 @@ render(siteContentContainer, new Sorter(sorter).getElement(), RenderPosition.BEF
 render(siteContentContainer, new TripContainer().getElement(), RenderPosition.BEFOREEND);
 const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
 
+const renderEvent = (dayEvent, place) => {
+  const dayEvt = new Event(dayEvent);
+  const dayEditEvt = new EventEdit(dayEvent);
+  const eventList = place;
+
+  const editButton = dayEvt.getElement().querySelector(`.event__rollup-btn`);
+  editButton.addEventListener(`click`, () => {
+    eventList.replaceChild(dayEditEvt.getElement(), dayEvt.getElement());
+  });
+
+  const editForm = dayEditEvt.getElement().querySelector(`form`);
+  editForm.addEventListener(`submit`, () => {
+    eventList.replaceChild(dayEvt.getElement(), dayEditEvt.getElement());
+  });
+
+  render(eventList, dayEvt.getElement(), RenderPosition.BEFOREEND);
+};
+
 dates.forEach((day, dayIndex) => {
   const dayContainer = new TripDay(day, dayIndex).getElement();
   tripEvents.filter((dayEvent) => day === new Date(dayEvent.startDate).toDateString())
-    .forEach((dayEvent, eventIndex) => {
-      render(
-          dayContainer.querySelector(`.trip-events__list`),
-          (eventIndex === 0 && dayIndex === 0) ? new EventEdit(dayEvent).getElement() : new Event(dayEvent).getElement(),
-          RenderPosition.BEFOREEND);
+    .forEach((dayEvent) => {
+      renderEvent(dayEvent, dayContainer.querySelector(`.trip-events__list`));
     });
 
   render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
