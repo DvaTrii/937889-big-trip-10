@@ -1,5 +1,10 @@
 import {monthNames} from "./const";
 
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
 const castDateFormat = (value) => {
   return value < 10 ? `0${value}` : String(value);
 };
@@ -54,4 +59,15 @@ export const createElement = (template) => {
 
 export const renderElement = (container, element) => {
   return container.appendChild(element);
+};
+
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
