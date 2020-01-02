@@ -1,8 +1,7 @@
-import {formatDateTime} from "../utils";
+import {createElement, formatDateTime} from "../utils";
 
-
-export const createEditEventTemplate = (tripEvent) => {
-  const {type, place, startDate, endDate, price, offers, description, photos} = tripEvent;
+const createEditEventTemplate = (dayEvent) => {
+  const {type, place, startDate, endDate, price, offers, description, photos} = dayEvent;
 
   const createOfferMarkup = (offer) => {
     const {offerType, title, offerPrice, isChecked} = offer;
@@ -168,3 +167,26 @@ export const createEditEventTemplate = (tripEvent) => {
     </li>`
   );
 };
+
+export default class Event {
+  constructor(dayEvent) {
+    this._dayEvent = dayEvent;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditEventTemplate(this._dayEvent);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
