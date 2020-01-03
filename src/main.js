@@ -26,19 +26,35 @@ render(siteContentContainer, new TripContainer().getElement(), RenderPosition.BE
 const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
 
 const renderEvent = (dayEvent, place) => {
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToEvent();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
   const dayEvt = new Event(dayEvent);
   const dayEditEvt = new EventEdit(dayEvent);
   const eventList = place;
 
+  const replaceEventToEdit = () => {
+    eventList.replaceChild(dayEditEvt.getElement(), dayEvt.getElement());
+  };
+
+  const replaceEditToEvent = () => {
+    eventList.replaceChild(dayEvt.getElement(), dayEditEvt.getElement());
+  };
+
   const editButton = dayEvt.getElement().querySelector(`.event__rollup-btn`);
   editButton.addEventListener(`click`, () => {
-    eventList.replaceChild(dayEditEvt.getElement(), dayEvt.getElement());
+    replaceEventToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
 
   const editForm = dayEditEvt.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, () => {
-    eventList.replaceChild(dayEvt.getElement(), dayEditEvt.getElement());
-  });
+  editForm.addEventListener(`submit`, replaceEditToEvent);
 
   render(eventList, dayEvt.getElement(), RenderPosition.BEFOREEND);
 };
