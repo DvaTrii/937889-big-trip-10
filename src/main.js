@@ -6,6 +6,7 @@ import TripContainer from "./components/trip-container";
 import TripDay from "./components/trip-day";
 import Event from "./components/event";
 import EventEdit from "./components/event-editor";
+import NoEventsComponent from './components/no-events.js';
 
 import {filters} from "./mock/filter";
 import {sorter} from "./mock/sort";
