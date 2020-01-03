@@ -13,9 +13,6 @@ import {sorter} from "./mock/sort";
 import {tripEvents, dates} from "./mock/mock";
 import {render, RenderPosition} from "./utils";
 
-const siteRouteElement = document.querySelector(`.trip-main`);
-render(siteRouteElement, new TripInfoComponent(tripEvents).getElement(), RenderPosition.AFTERBEGIN);
-
 const siteMenuContainer = document.querySelector(`.trip-controls`);
 render(siteMenuContainer, new SiteMenuComponent().getElement(), RenderPosition.BEFOREEND);
 render(siteMenuContainer, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
@@ -25,6 +22,10 @@ const siteContentContainer = document.querySelector(`.trip-events`);
 if (tripEvents === []) {
   render(siteContentContainer, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
 } else {
+
+  const siteRouteElement = document.querySelector(`.trip-main`);
+  render(siteRouteElement, new TripInfoComponent(tripEvents).getElement(), RenderPosition.AFTERBEGIN);
+
   render(siteContentContainer, new SorterComponent(sorter).getElement(), RenderPosition.BEFOREEND);
 
   render(siteContentContainer, new TripContainerComponent().getElement(), RenderPosition.BEFOREEND);
