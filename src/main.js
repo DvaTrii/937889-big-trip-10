@@ -21,51 +21,57 @@ render(siteMenuContainer, new SiteMenuComponent().getElement(), RenderPosition.B
 render(siteMenuContainer, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
-render(siteContentContainer, new SorterComponent(sorter).getElement(), RenderPosition.BEFOREEND);
 
-render(siteContentContainer, new TripContainerComponent().getElement(), RenderPosition.BEFOREEND);
-const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
+if (tripEvents === []) {
+  render(siteContentContainer, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
+} else {
+  render(siteContentContainer, new SorterComponent(sorter).getElement(), RenderPosition.BEFOREEND);
 
-const renderEvent = (dayEvent, place) => {
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+  render(siteContentContainer, new TripContainerComponent().getElement(), RenderPosition.BEFOREEND);
+  const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
 
-    if (isEscKey) {
-      replaceEditToEvent();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
+  const renderEvent = (dayEvent, place) => {
+    const onEscKeyDown = (evt) => {
+      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
-  const dayEvt = new EventComponent(dayEvent);
-  const dayEditEvt = new EventEditComponent(dayEvent);
-  const eventList = place;
+      if (isEscKey) {
+        replaceEditToEvent();
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
 
-  const replaceEventToEdit = () => {
-    eventList.replaceChild(dayEditEvt.getElement(), dayEvt.getElement());
-  };
+    const dayEvt = new EventComponent(dayEvent);
+    const dayEditEvt = new EventEditComponent(dayEvent);
+    const eventList = place;
 
-  const replaceEditToEvent = () => {
-    eventList.replaceChild(dayEvt.getElement(), dayEditEvt.getElement());
-  };
+    const replaceEventToEdit = () => {
+      eventList.replaceChild(dayEditEvt.getElement(), dayEvt.getElement());
+    };
 
-  const editButton = dayEvt.getElement().querySelector(`.event__rollup-btn`);
-  editButton.addEventListener(`click`, () => {
-    replaceEventToEdit();
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
+    const replaceEditToEvent = () => {
+      eventList.replaceChild(dayEvt.getElement(), dayEditEvt.getElement());
+    };
 
-  const editForm = dayEditEvt.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, replaceEditToEvent);
-
-  render(eventList, dayEvt.getElement(), RenderPosition.BEFOREEND);
-};
-
-dates.forEach((day, dayIndex) => {
-  const dayContainer = new TripDayComponent(day, dayIndex).getElement();
-  tripEvents.filter((dayEvent) => day === new Date(dayEvent.startDate).toDateString())
-    .forEach((dayEvent) => {
-      renderEvent(dayEvent, dayContainer.querySelector(`.trip-events__list`));
+    const editButton = dayEvt.getElement().querySelector(`.event__rollup-btn`);
+    editButton.addEventListener(`click`, () => {
+      replaceEventToEdit();
+      document.addEventListener(`keydown`, onEscKeyDown);
     });
 
-  render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
-});
+    const editForm = dayEditEvt.getElement().querySelector(`form`);
+    editForm.addEventListener(`submit`, replaceEditToEvent);
+
+    render(eventList, dayEvt.getElement(), RenderPosition.BEFOREEND);
+  };
+
+  dates.forEach((day, dayIndex) => {
+    const dayContainer = new TripDayComponent(day, dayIndex).getElement();
+    tripEvents.filter((dayEvent) => day === new Date(dayEvent.startDate).toDateString())
+      .forEach((dayEvent) => {
+        renderEvent(dayEvent, dayContainer.querySelector(`.trip-events__list`));
+      });
+
+    render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
+  });
+}
+
