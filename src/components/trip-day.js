@@ -1,5 +1,5 @@
 import {castDate, castomDate} from "../utils";
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from "./abstract-component.js";
 
 const createTripDayTemplate = (date, dayIndex) => {
   return (
