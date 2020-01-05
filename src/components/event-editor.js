@@ -1,4 +1,5 @@
-import {createElement, formatDateTime} from "../utils";
+import {formatDateTime} from "../utils";
+import AbstractComponent from "./abstract-component";
 
 const createEditEventTemplate = (dayEvent) => {
   const {type, place, startDate, endDate, price, offers, description, photos} = dayEvent;
@@ -168,25 +169,13 @@ const createEditEventTemplate = (dayEvent) => {
   );
 };
 
-export default class EventEdit {
+export default class EventEdit extends AbstractComponent {
   constructor(dayEvent) {
+    super();
     this._dayEvent = dayEvent;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditEventTemplate(this._dayEvent);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
