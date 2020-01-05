@@ -1,6 +1,5 @@
 import AbstractComponent from "./abstract-component.js";
 
-
 const createDirectionIconMarkup = () => {
   return (
     `<svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
