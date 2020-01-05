@@ -1,5 +1,5 @@
 import {formatDateTime} from "../utils";
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from "./abstract-component.js";
 
 const createEditEventTemplate = (dayEvent) => {
   const {type, place, startDate, endDate, price, offers, description, photos} = dayEvent;

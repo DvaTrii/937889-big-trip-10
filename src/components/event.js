@@ -1,5 +1,5 @@
 import {castDateTime} from "../utils";
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from "./abstract-component.js";
 
 const createEventItemTemplate = (dayEvent) => {
   const {type, place, startDate, endDate, price, offers} = dayEvent;
