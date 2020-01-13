@@ -1,17 +1,17 @@
 import {castDateTime, createElement} from "../utils";
 
-const createEventItemTemplate = (dayEvent) => {
-  const {type, place, startDate, endDate, price, offers} = dayEvent;
-
-  const createOfferMarkup = (offer) => {
-    const {title, offerPrice, isChecked} = offer;
-    return (isChecked ?
-      `<li class="event__offer">
+const createOfferMarkup = (offer) => {
+  const {title, offerPrice, isChecked} = offer;
+  return (isChecked ?
+    `<li class="event__offer">
           <span class="event__offer-title">${title}</span>
           &plus;
           &euro;&nbsp;<span class="event__offer-price">${offerPrice}</span>
        </li>` : ``);
-  };
+};
+
+const createEventItemTemplate = (dayEvent) => {
+  const {type, place, startDate, endDate, price, offers} = dayEvent;
 
   const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
 

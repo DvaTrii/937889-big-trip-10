@@ -25,22 +25,22 @@ render(siteContentContainer, new Sorter(sorter).getElement(), RenderPosition.BEF
 render(siteContentContainer, new TripContainer().getElement(), RenderPosition.BEFOREEND);
 const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
 
-const renderEvent = (dayEvent, place) => {
-  const dayEvt = new Event(dayEvent);
-  const dayEditEvt = new EventEdit(dayEvent);
+const renderEvent = (event, place) => {
+  const dayEvent = new Event(event);
+  const dayEditEvent = new EventEdit(event);
   const eventList = place;
 
-  const editButton = dayEvt.getElement().querySelector(`.event__rollup-btn`);
+  const editButton = dayEvent.getElement().querySelector(`.event__rollup-btn`);
   editButton.addEventListener(`click`, () => {
-    eventList.replaceChild(dayEditEvt.getElement(), dayEvt.getElement());
+    eventList.replaceChild(dayEditEvent.getElement(), dayEvent.getElement());
   });
 
-  const editForm = dayEditEvt.getElement().querySelector(`form`);
+  const editForm = dayEditEvent.getElement().querySelector(`form`);
   editForm.addEventListener(`submit`, () => {
-    eventList.replaceChild(dayEvt.getElement(), dayEditEvt.getElement());
+    eventList.replaceChild(dayEvent.getElement(), dayEditEvent.getElement());
   });
 
-  render(eventList, dayEvt.getElement(), RenderPosition.BEFOREEND);
+  render(eventList, dayEvent.getElement(), RenderPosition.BEFOREEND);
 };
 
 dates.forEach((day, dayIndex) => {
