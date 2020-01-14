@@ -1,23 +1,44 @@
 import {monthNames} from "../const";
+import {createElement} from "../utils";
 
-export const createTripInfoTemplate = (data) => {
-  const places = data.map((it) => it.place);
-  const startDates = data.map((it) => new Date(it.startDate).getDate());
-  const endDates = data.map((it) => new Date(it.endDate).getDate());
-  const months = data.map((it) => monthNames[new Date(it.endDate).getMonth()]);
-  const price = data.map((it) => it.price).reduce((acc, cur) => acc + cur);
+const createTripInfoTemplate = (data) => {
 
   return (
-    `<div class="trip-info__main">
-      <h1 class="trip-info__title">${places[0]} &mdash; ... &mdash; ${places[places.length - 1]}</h1>
+    `<section class="trip-main__trip-info  trip-info">
+        <div class="trip-info__main">
+            <h1 class="trip-info__title">${data[0].place} &mdash; ... &mdash; ${data[data.length - 1].place}</h1>
 
-      <p class="trip-info__dates">${months[0]}&nbsp;
-                                  ${startDates[0]}&nbsp;&mdash;&nbsp;
-                                  ${(months[0] === months[months.length - 1]) ? `` : months[months.length - 1] + ` `}
-                                  ${endDates[endDates.length - 1]}</p>
-    </div>
-    <p class="trip-info__cost">
-              Total: &euro;&nbsp;<span class="trip-info__cost-value">${price}</span>
-    </p>`
+             <p class="trip-info__dates">${monthNames[new Date(data[0].startDate).getMonth()]}&nbsp;
+                                         ${new Date(data[0].startDate).getDate()}&nbsp;&mdash;&nbsp;
+                                         ${(monthNames[new Date(data[0].startDate).getMonth()] === monthNames[new Date(data[data.length - 1].endDate).getMonth()] ? `` : monthNames[new Date(data[data.length - 1].endDate).getMonth()] + ` `)}
+                                         ${new Date(data[data.length - 1].endDate).getDate()}</p>
+        </div>
+        <p class="trip-info__cost">
+                  Total: &euro;&nbsp;<span class="trip-info__cost-value">${data.reduce((acc, {price}) => acc + price, 0)}</span>
+        </p>
+    </section>`
   );
 };
+
+export default class TripInfo {
+  constructor(data) {
+    this._data = data;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripInfoTemplate(this._data);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,3 +1,5 @@
+import {createElement} from "../utils";
+
 const createDirectionIconMarkup = () => {
   return (
     `<svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
@@ -23,7 +25,7 @@ const createSortItemMarkup = (sortItem) => {
   );
 };
 
-export const createSortTemplate = (sorter) => {
+const createSortTemplate = (sorter) => {
   const sorterMarkup = sorter.map((it) => createSortItemMarkup(it)).join(`\n`);
 
   return (
@@ -36,3 +38,26 @@ export const createSortTemplate = (sorter) => {
     </form>`
   );
 };
+
+export default class Sorter {
+  constructor(sorter) {
+    this._sorter = sorter;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSortTemplate(this._sorter);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
