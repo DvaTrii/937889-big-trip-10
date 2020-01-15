@@ -19,7 +19,7 @@ render(siteMenuContainer, new FilterComponent(filters).getElement(), RenderPosit
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 
-if (tripEvents === []) {
+if (tripEvents.length === 0) {
   render(siteContentContainer, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
 } else {
 
