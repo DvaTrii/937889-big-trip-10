@@ -33,4 +33,3 @@ export default class SiteMenu {
     this._element = null;
   }
 }
-

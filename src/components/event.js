@@ -71,4 +71,3 @@ export default class Event {
     this._element = null;
   }
 }
-

@@ -1,54 +1,77 @@
-import TripInfo from "./components/trip-info";
-import SiteMenu from "./components/site-menu";
-import Filter from "./components/filters";
-import Sorter from "./components/sorter";
-import TripContainer from "./components/trip-container";
-import TripDay from "./components/trip-day";
-import Event from "./components/event";
-import EventEdit from "./components/event-editor";
+import TripInfoComponent from "./components/trip-info.js";
+import SiteMenuComponent from "./components/site-menu.js";
+import FilterComponent from "./components/filters.js";
+import SorterComponent from "./components/sorter.js";
+import TripContainerComponent from "./components/trip-container.js";
+import TripDayComponent from "./components/trip-day.js";
+import EventComponent from "./components/event.js";
+import EventEditComponent from "./components/event-editor.js";
+import NoEventsComponent from './components/no-events.js';
 
 import {filters} from "./mock/filter";
 import {sorter} from "./mock/sort";
 import {tripEvents, dates} from "./mock/mock";
 import {render, RenderPosition} from "./utils";
 
-const siteRouteElement = document.querySelector(`.trip-main`);
-render(siteRouteElement, new TripInfo(tripEvents).getElement(), RenderPosition.AFTERBEGIN);
-
 const siteMenuContainer = document.querySelector(`.trip-controls`);
-render(siteMenuContainer, new SiteMenu().getElement(), RenderPosition.BEFOREEND);
-render(siteMenuContainer, new Filter(filters).getElement(), RenderPosition.BEFOREEND);
+render(siteMenuContainer, new SiteMenuComponent().getElement(), RenderPosition.BEFOREEND);
+render(siteMenuContainer, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
-render(siteContentContainer, new Sorter(sorter).getElement(), RenderPosition.BEFOREEND);
 
-render(siteContentContainer, new TripContainer().getElement(), RenderPosition.BEFOREEND);
-const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
+if (tripEvents.length === 0) {
+  render(siteContentContainer, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
+} else {
 
-const renderEvent = (event, place) => {
-  const dayEvent = new Event(event);
-  const dayEditEvent = new EventEdit(event);
-  const eventList = place;
+  const siteRouteElement = document.querySelector(`.trip-main`);
+  render(siteRouteElement, new TripInfoComponent(tripEvents).getElement(), RenderPosition.AFTERBEGIN);
 
-  const editButton = dayEvent.getElement().querySelector(`.event__rollup-btn`);
-  editButton.addEventListener(`click`, () => {
-    eventList.replaceChild(dayEditEvent.getElement(), dayEvent.getElement());
-  });
+  render(siteContentContainer, new SorterComponent(sorter).getElement(), RenderPosition.BEFOREEND);
 
-  const editForm = dayEditEvent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, () => {
-    eventList.replaceChild(dayEvent.getElement(), dayEditEvent.getElement());
-  });
+  render(siteContentContainer, new TripContainerComponent().getElement(), RenderPosition.BEFOREEND);
+  const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
 
-  render(eventList, dayEvent.getElement(), RenderPosition.BEFOREEND);
-};
+  const renderEvent = (event, place) => {
+    const onEscKeyDown = (evt) => {
+      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
-dates.forEach((day, dayIndex) => {
-  const dayContainer = new TripDay(day, dayIndex).getElement();
-  tripEvents.filter((dayEvent) => day === new Date(dayEvent.startDate).toDateString())
-    .forEach((dayEvent) => {
-      renderEvent(dayEvent, dayContainer.querySelector(`.trip-events__list`));
+      if (isEscKey) {
+        replaceEditToEvent();
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
+
+    const dayEvent = new EventComponent(event);
+    const dayEditEvent = new EventEditComponent(event);
+
+    const replaceEventToEdit = () => {
+      place.replaceChild(dayEditEvent.getElement(), dayEvent.getElement());
+    };
+
+    const replaceEditToEvent = () => {
+      place.replaceChild(dayEvent.getElement(), dayEditEvent.getElement());
+    };
+
+    const editButton = dayEvent.getElement().querySelector(`.event__rollup-btn`);
+    editButton.addEventListener(`click`, () => {
+      replaceEventToEdit();
+      document.addEventListener(`keydown`, onEscKeyDown);
     });
 
-  render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
-});
+    const editForm = dayEditEvent.getElement().querySelector(`form`);
+    editForm.addEventListener(`submit`, replaceEditToEvent);
+
+    render(place, dayEvent.getElement(), RenderPosition.BEFOREEND);
+  };
+
+  dates.forEach((day, dayIndex) => {
+    const dayContainer = new TripDayComponent(day, dayIndex).getElement();
+    tripEvents.filter((dayEvent) => day === new Date(dayEvent.startDate).toDateString())
+      .forEach((dayEvent) => {
+        renderEvent(dayEvent, dayContainer.querySelector(`.trip-events__list`));
+      });
+
+    render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
+  });
+}
+
