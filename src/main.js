@@ -74,3 +74,4 @@ if (tripEvents.length === 0) {
     render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
   });
 }
+
