@@ -19,7 +19,7 @@ render(siteMenuContainer, new FilterComponent(filters).getElement(), RenderPosit
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 
-if (tripEvents === []) {
+if (tripEvents.length === 0) {
   render(siteContentContainer, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
 } else {
 
@@ -31,7 +31,7 @@ if (tripEvents === []) {
   render(siteContentContainer, new TripContainerComponent().getElement(), RenderPosition.BEFOREEND);
   const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
 
-  const renderEvent = (dayEvent, place) => {
+  const renderEvent = (event, place) => {
     const onEscKeyDown = (evt) => {
       const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
@@ -41,28 +41,27 @@ if (tripEvents === []) {
       }
     };
 
-    const dayEvt = new EventComponent(dayEvent);
-    const dayEditEvt = new EventEditComponent(dayEvent);
-    const eventList = place;
+    const dayEvent = new EventComponent(event);
+    const dayEditEvent = new EventEditComponent(event);
 
     const replaceEventToEdit = () => {
-      eventList.replaceChild(dayEditEvt.getElement(), dayEvt.getElement());
+      place.replaceChild(dayEditEvent.getElement(), dayEvent.getElement());
     };
 
     const replaceEditToEvent = () => {
-      eventList.replaceChild(dayEvt.getElement(), dayEditEvt.getElement());
+      place.replaceChild(dayEvent.getElement(), dayEditEvent.getElement());
     };
 
-    const editButton = dayEvt.getElement().querySelector(`.event__rollup-btn`);
+    const editButton = dayEvent.getElement().querySelector(`.event__rollup-btn`);
     editButton.addEventListener(`click`, () => {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
     });
 
-    const editForm = dayEditEvt.getElement().querySelector(`form`);
+    const editForm = dayEditEvent.getElement().querySelector(`form`);
     editForm.addEventListener(`submit`, replaceEditToEvent);
 
-    render(eventList, dayEvt.getElement(), RenderPosition.BEFOREEND);
+    render(place, dayEvent.getElement(), RenderPosition.BEFOREEND);
   };
 
   dates.forEach((day, dayIndex) => {
