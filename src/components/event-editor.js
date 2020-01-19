@@ -1,4 +1,4 @@
-import {formatDateTime} from "../utils/render";
+import {formatDateTime} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
 const createOfferMarkup = (offer) => {
