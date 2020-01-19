@@ -11,24 +11,25 @@ import NoEventsComponent from './components/no-events.js';
 import {filters} from "./mock/filter";
 import {sorter} from "./mock/sort";
 import {tripEvents, dates} from "./mock/mock";
-import {render, RenderPosition} from "./utils/render";
+import {render, RenderPosition} from "./utils/render.js";
 
 const siteMenuContainer = document.querySelector(`.trip-controls`);
-render(siteMenuContainer, new SiteMenuComponent().getElement(), RenderPosition.BEFOREEND);
-render(siteMenuContainer, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
+
+render(siteMenuContainer, new SiteMenuComponent(), RenderPosition.BEFOREEND);
+render(siteMenuContainer, new FilterComponent(filters), RenderPosition.BEFOREEND);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 
 if (tripEvents.length === 0) {
-  render(siteContentContainer, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
+  render(siteContentContainer, new NoEventsComponent(), RenderPosition.BEFOREEND);
 } else {
 
   const siteRouteElement = document.querySelector(`.trip-main`);
-  render(siteRouteElement, new TripInfoComponent(tripEvents).getElement(), RenderPosition.AFTERBEGIN);
+  render(siteRouteElement, new TripInfoComponent(tripEvents), RenderPosition.AFTERBEGIN);
 
-  render(siteContentContainer, new SorterComponent(sorter).getElement(), RenderPosition.BEFOREEND);
+  render(siteContentContainer, new SorterComponent(sorter), RenderPosition.BEFOREEND);
 
-  render(siteContentContainer, new TripContainerComponent().getElement(), RenderPosition.BEFOREEND);
+  render(siteContentContainer, new TripContainerComponent(), RenderPosition.BEFOREEND);
   const siteEventsContainer = siteContentContainer.querySelector(`.trip-days`);
 
   const renderEvent = (event, place) => {
@@ -61,17 +62,16 @@ if (tripEvents.length === 0) {
     const editForm = dayEditEvent.getElement().querySelector(`form`);
     editForm.addEventListener(`submit`, replaceEditToEvent);
 
-    render(place, dayEvent.getElement(), RenderPosition.BEFOREEND);
+    render(place, dayEvent, RenderPosition.BEFOREEND);
   };
 
   dates.forEach((day, dayIndex) => {
-    const dayContainer = new TripDayComponent(day, dayIndex).getElement();
+    const dayContainer = new TripDayComponent(day, dayIndex);
     tripEvents.filter((dayEvent) => day === new Date(dayEvent.startDate).toDateString())
       .forEach((dayEvent) => {
-        renderEvent(dayEvent, dayContainer.querySelector(`.trip-events__list`));
+        renderEvent(dayEvent, dayContainer.getElement().querySelector(`.trip-events__list`));
       });
 
     render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
   });
 }
-
