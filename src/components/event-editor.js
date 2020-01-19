@@ -1,14 +1,11 @@
 import {formatDateTime} from "../utils";
 import AbstractComponent from "./abstract-component.js";
 
-const createEditEventTemplate = (dayEvent) => {
-  const {type, place, startDate, endDate, price, offers, description, photos} = dayEvent;
+const createOfferMarkup = (offer) => {
+  const {offerType, title, offerPrice, isChecked} = offer;
 
-  const createOfferMarkup = (offer) => {
-    const {offerType, title, offerPrice, isChecked} = offer;
-
-    return (
-      `<div class="event__offer-selector">
+  return (
+    `<div class="event__offer-selector">
         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}" ${isChecked ? `checked` : ``}>
         <label class="event__offer-label" for="event-offer-${offerType}-1">
           <span class="event__offer-title">${title}</span>
@@ -16,16 +13,19 @@ const createEditEventTemplate = (dayEvent) => {
           &euro;&nbsp;<span class="event__offer-price">${offerPrice}</span>
         </label>
       </div>`
-    );
-  };
+  );
+};
+
+const createPhotoMarkup = (photoSource) => {
+  return (
+    `<img class="event__photo" src="${photoSource}" alt="Event photo">`
+  );
+};
+
+const createEditEventTemplate = (dayEvent) => {
+  const {type, place, startDate, endDate, price, offers, description, photos} = dayEvent;
 
   const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
-
-  const createPhotoMarkup = (photoSource) => {
-    return (
-      `<img class="event__photo" src="${photoSource}" alt="Event photo">`
-    );
-  };
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
 
