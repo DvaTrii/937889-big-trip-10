@@ -11,7 +11,7 @@ import NoEventsComponent from './components/no-events.js';
 import {filters} from "./mock/filter";
 import {sorter} from "./mock/sort";
 import {tripEvents, dates} from "./mock/mock";
-import {render, RenderPosition} from "./utils";
+import {render, RenderPosition} from "./utils/render";
 
 const siteMenuContainer = document.querySelector(`.trip-controls`);
 render(siteMenuContainer, new SiteMenuComponent().getElement(), RenderPosition.BEFOREEND);

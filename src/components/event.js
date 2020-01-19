@@ -1,4 +1,4 @@
-import {castDateTime} from "../utils";
+import {castDateTime} from "../utils/render";
 import AbstractComponent from "./abstract-component.js";
 
 const createOfferMarkup = (offer) => {
