@@ -53,15 +53,6 @@ if (tripEvents.length === 0) {
       replace(dayEvent, dayEditEvent);
     };
 
-    // const editButton = dayEvent.getElement().querySelector(`.event__rollup-btn`);
-    // editButton.addEventListener(`click`, () => {
-    //   replaceEventToEdit();
-    //   document.addEventListener(`keydown`, onEscKeyDown);
-    // });
-
-    // const editForm = dayEditEvent.getElement().querySelector(`form`);
-    // editForm.addEventListener(`submit`, replaceEditToEvent);
-
     dayEvent.setClickHandler(() => {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
