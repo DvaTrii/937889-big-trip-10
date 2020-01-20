@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component.js";
 
 const createDirectionIconMarkup = () => {
   return (
@@ -39,25 +39,13 @@ const createSortTemplate = (sorter) => {
   );
 };
 
-export default class Sorter {
+export default class Sorter extends AbstractComponent {
   constructor(sorter) {
+    super();
     this._sorter = sorter;
-    this._element = null;
   }
 
   getTemplate() {
     return createSortTemplate(this._sorter);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

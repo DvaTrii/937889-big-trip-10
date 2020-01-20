@@ -1,9 +1,4 @@
-import {monthNames} from "./const";
-
-export const RenderPosition = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
-};
+import {monthNames} from "../const";
 
 const castDateFormat = (value) => {
   return value < 10 ? `0${value}` : String(value);
@@ -49,25 +44,4 @@ export const castDate = (data) => {
 export const castomDate = (data) => {
   const [dateNum, month] = getDateFromStr(data);
   return `${monthNames[month]} ${dateNum}`;
-};
-
-export const createElement = (template) => {
-  const el = document.createElement(`div`);
-  el.innerHTML = template;
-  return el.firstChild;
-};
-//
-// export const renderElement = (container, element) => {
-//   return container.appendChild(element);
-// };
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
 };

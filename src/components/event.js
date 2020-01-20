@@ -1,4 +1,5 @@
-import {castDateTime, createElement} from "../utils";
+import {castDateTime} from "../utils/common.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createOfferMarkup = (offer) => {
   const {title, offerPrice, isChecked} = offer;
@@ -49,25 +50,17 @@ const createEventItemTemplate = (dayEvent) => {
   );
 };
 
-export default class Event {
+export default class Event extends AbstractComponent {
   constructor(dayEvent) {
+    super();
     this._dayEvent = dayEvent;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventItemTemplate(this._dayEvent);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
   }
 }

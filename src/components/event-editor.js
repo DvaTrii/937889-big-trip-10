@@ -1,4 +1,5 @@
-import {createElement, formatDateTime} from "../utils";
+import {formatDateTime} from "../utils/common.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createOfferMarkup = (offer) => {
   const {offerType, title, offerPrice, isChecked} = offer;
@@ -179,25 +180,17 @@ const createEditEventTemplate = (dayEvent) => {
   );
 };
 
-export default class EventEdit {
+export default class EventEdit extends AbstractComponent {
   constructor(dayEvent) {
+    super();
     this._dayEvent = dayEvent;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditEventTemplate(this._dayEvent);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
   }
 }
