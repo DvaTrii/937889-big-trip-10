@@ -189,4 +189,8 @@ export default class EventEdit extends AbstractComponent {
   getTemplate() {
     return createEditEventTemplate(this._dayEvent);
   }
+
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
+  }
 }

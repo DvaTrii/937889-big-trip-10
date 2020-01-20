@@ -59,8 +59,10 @@ if (tripEvents.length === 0) {
       document.addEventListener(`keydown`, onEscKeyDown);
     });
 
-    const editForm = dayEditEvent.getElement().querySelector(`form`);
-    editForm.addEventListener(`submit`, replaceEditToEvent);
+    // const editForm = dayEditEvent.getElement().querySelector(`form`);
+    // editForm.addEventListener(`submit`, replaceEditToEvent);
+
+    dayEditEvent.setSubmitHandler(replaceEditToEvent());
 
     render(place, dayEvent, RenderPosition.BEFOREEND);
   };
