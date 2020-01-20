@@ -18,4 +18,3 @@ export default class SiteMenu extends AbstractComponent {
     return createSiteMenuTemplate();
   }
 }
-

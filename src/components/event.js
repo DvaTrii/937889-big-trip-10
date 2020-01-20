@@ -64,4 +64,3 @@ export default class Event extends AbstractComponent {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
   }
 }
-
