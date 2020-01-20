@@ -11,7 +11,7 @@ import NoEventsComponent from './components/no-events.js';
 import {filters} from "./mock/filter";
 import {sorter} from "./mock/sort";
 import {tripEvents, dates} from "./mock/mock";
-import {render,replace, RenderPosition} from "./utils/render.js";
+import {render, replace, RenderPosition} from "./utils/render.js";
 
 const siteMenuContainer = document.querySelector(`.trip-controls`);
 
@@ -53,14 +53,19 @@ if (tripEvents.length === 0) {
       replace(dayEvent, dayEditEvent);
     };
 
-    const editButton = dayEvent.getElement().querySelector(`.event__rollup-btn`);
-    editButton.addEventListener(`click`, () => {
-      replaceEventToEdit();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
+    // const editButton = dayEvent.getElement().querySelector(`.event__rollup-btn`);
+    // editButton.addEventListener(`click`, () => {
+    //   replaceEventToEdit();
+    //   document.addEventListener(`keydown`, onEscKeyDown);
+    // });
 
     // const editForm = dayEditEvent.getElement().querySelector(`form`);
     // editForm.addEventListener(`submit`, replaceEditToEvent);
+
+    dayEvent.setClickHandler(() => {
+      replaceEventToEdit();
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
 
     dayEditEvent.setSubmitHandler(replaceEditToEvent());
 
