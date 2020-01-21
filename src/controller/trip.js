@@ -39,6 +39,21 @@ const renderEvent = (event, place) => {
   render(place, dayEvent, RenderPosition.BEFOREEND);
 };
 
+const renderEvents = (events, dates, place) => {
+  render(place, new TripContainerComponent(), RenderPosition.BEFOREEND);
+  const siteEventsContainer = place.querySelector(`.trip-days`);
+
+  dates.forEach((day, dayIndex) => {
+    const dayContainer = new TripDayComponent(day, dayIndex);
+    events.filter((dayEvent) => day === new Date(dayEvent.startDate).toDateString())
+      .forEach((dayEvent) => {
+        renderEvent(dayEvent, dayContainer.getElement().querySelector(`.trip-events__list`));
+      });
+
+    render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
+  });
+};
+
 export default class TripController {
   constructor(container, events) {
     this._container = container;
@@ -46,7 +61,6 @@ export default class TripController {
     this._noEventsComponent = new NoEventsComponent();
     this._tripInfoComponent = new TripInfoComponent(events);
     this._sorterComponent = new SorterComponent();
-    this._tripContainerComponent = new TripContainerComponent();
   }
 
   render(events, dates) {
@@ -58,19 +72,7 @@ export default class TripController {
       render(siteRouteElement, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
 
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
-
-      render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
-      const siteEventsContainer = this._container.querySelector(`.trip-days`);
-
-      dates.forEach((day, dayIndex) => {
-        const dayContainer = new TripDayComponent(day, dayIndex);
-        events.filter((dayEvent) => day === new Date(dayEvent.startDate).toDateString())
-          .forEach((dayEvent) => {
-            renderEvent(dayEvent, dayContainer.getElement().querySelector(`.trip-events__list`));
-          });
-
-        render(siteEventsContainer, dayContainer, RenderPosition.BEFOREEND);
-      });
+      renderEvents(events, dates, this._container);
     }
   }
 }
