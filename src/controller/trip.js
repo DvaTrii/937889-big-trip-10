@@ -40,12 +40,12 @@ const renderEvent = (event, place) => {
 };
 
 export default class TripController {
-  constructor(container, events, sorter) {
+  constructor(container, events) {
     this._container = container;
 
     this._noEventsComponent = new NoEventsComponent();
     this._tripInfoComponent = new TripInfoComponent(events);
-    this._sorterComponent = new SorterComponent(sorter);
+    this._sorterComponent = new SorterComponent();
     this._tripContainerComponent = new TripContainerComponent();
   }
 

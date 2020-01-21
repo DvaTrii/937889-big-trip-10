@@ -3,7 +3,6 @@ import FilterComponent from "./components/filters.js";
 import TripController from "./controller/trip.js";
 
 import {filters} from "./mock/filter";
-import {sorter} from "./mock/sort.js";
 import {tripEvents, dates} from "./mock/mock.js";
 import {render, RenderPosition} from "./utils/render.js";
 
@@ -14,6 +13,6 @@ render(siteMenuContainer, new FilterComponent(filters), RenderPosition.BEFOREEND
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 
-const tripController = new TripController(siteContentContainer, tripEvents, sorter);
+const tripController = new TripController(siteContentContainer, tripEvents);
 
 tripController.render(tripEvents, dates);
