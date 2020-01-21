@@ -45,3 +45,13 @@ export const castomDate = (data) => {
   const [dateNum, month] = getDateFromStr(data);
   return `${monthNames[month]} ${dateNum}`;
 };
+
+// время для разметки в event
+export const customTime = (data) => {
+  const [hours, minutes] = getNormDate(data).slice(3);
+  return `${hours}:${minutes}`;
+};
+
+export const durationTime = (startDate, endDate) => {
+  return `${getNormDate(endDate - startDate).slice(3, 4)}H ${getNormDate(endDate - startDate).slice(4)}M`;
+};
