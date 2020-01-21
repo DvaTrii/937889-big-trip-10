@@ -1,5 +1,5 @@
 import TripInfoComponent from "../components/trip-info.js";
-import SorterComponent from "../components/sorter.js";
+import SorterComponent, {SortType} from "../components/sorter.js";
 import TripContainerComponent from "../components/trip-container.js";
 import TripDayComponent from "../components/trip-day.js";
 import EventComponent from "../components/event.js";
