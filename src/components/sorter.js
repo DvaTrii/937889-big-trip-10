@@ -1,9 +1,9 @@
 import AbstractComponent from "./abstract-component.js";
 
 export const SortType = {
-  TIME: `time`,
-  PRICE: `price`,
-  EVENT: `event`,
+  TIME_DOWN: `time`,
+  PRICE_DOWN: `price`,
+  EVENT_DOWN: `event`,
 };
 
 const createSortTemplate = () => {
@@ -13,19 +13,19 @@ const createSortTemplate = () => {
 
       <div class="trip-sort__item  trip-sort__item--event">
         <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event" checked>
-        <label class="trip-sort__btn" for="sort-event" data-sort-type="${SortType.EVENT}">Event</label>
+        <label class="trip-sort__btn" for="sort-event" data-sort-type="${SortType.EVENT_DOWN}">Event</label>
       </div>
 
       <div class="trip-sort__item  trip-sort__item--time">
         <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time">
-        <label class="trip-sort__btn" for="sort-time" data-sort-type="${SortType.TIME}">
+        <label class="trip-sort__btn" for="sort-time" data-sort-type="${SortType.TIME_DOWN}">
           Time
         </label>
       </div>
 
       <div class="trip-sort__item  trip-sort__item--price">
         <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price">
-        <label class="trip-sort__btn" for="sort-price" data-sort-type="${SortType.PRICE}">
+        <label class="trip-sort__btn" for="sort-price" data-sort-type="${SortType.PRICE_DOWN}">
           Price
         </label>
       </div>
@@ -39,7 +39,7 @@ export default class Sorter extends AbstractComponent {
   constructor() {
     super();
 
-    this._currenSortType = SortType.EVENT;
+    this._currenSortType = SortType.EVENT_DOWN;
   }
 
   getTemplate() {
