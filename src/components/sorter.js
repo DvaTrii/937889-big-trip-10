@@ -54,7 +54,6 @@ export default class Sorter extends AbstractComponent {
 
   setSortTypeChangeHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
-      evt.preventDefault();
 
       if (evt.target.tagName !== `LABEL`) {
         return;
