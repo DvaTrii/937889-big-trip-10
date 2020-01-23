@@ -1,4 +1,4 @@
-import {castDateTime} from "../utils/common.js";
+import {castDateTime, customTime, durationTime} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 
 const createOfferMarkup = (offer) => {
@@ -26,11 +26,11 @@ const createEventItemTemplate = (dayEvent) => {
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${castDateTime(startDate)}">10:30</time>
+          <time class="event__start-time" datetime="${castDateTime(startDate)}">${customTime(startDate)}</time>
           &mdash;
-          <time class="event__end-time" datetime="${castDateTime(endDate)}">11:00</time>
+          <time class="event__end-time" datetime="${castDateTime(endDate)}">${customTime(endDate)}</time>
         </p>
-        <p class="event__duration">1H 30M</p>
+        <p class="event__duration">${durationTime(startDate, endDate)}</p>
       </div>
 
       <p class="event__price">
