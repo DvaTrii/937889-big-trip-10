@@ -2,43 +2,10 @@ import TripInfoComponent from "../components/trip-info.js";
 import SorterComponent, {SortType} from "../components/sorter.js";
 import TripContainerComponent from "../components/trip-container.js";
 import TripDayComponent from "../components/trip-day.js";
-import EventComponent from "../components/event.js";
-import EventEditComponent from "../components/event-editor.js";
 import NoEventsComponent from '../components/no-events.js';
 
-import {render, replace, RenderPosition} from "../utils/render.js";
+import {render, RenderPosition} from "../utils/render.js";
 import {tripEvents} from "../mock/mock";
-
-// const renderEvent = (event, place) => {
-//   const onEscKeyDown = (evt) => {
-//     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-//
-//     if (isEscKey) {
-//       replaceEditToEvent();
-//       document.removeEventListener(`keydown`, onEscKeyDown);
-//     }
-//   };
-//
-//   const dayEvent = new EventComponent(event);
-//   const dayEditEvent = new EventEditComponent(event);
-//
-//   const replaceEventToEdit = () => {
-//     replace(dayEditEvent, dayEvent);
-//   };
-//
-//   const replaceEditToEvent = () => {
-//     replace(dayEvent, dayEditEvent);
-//   };
-//
-//   dayEvent.setClickHandler(() => {
-//     replaceEventToEdit();
-//     document.addEventListener(`keydown`, onEscKeyDown);
-//   });
-//
-//   dayEditEvent.setSubmitHandler(replaceEditToEvent());
-//
-//   render(place, dayEvent, RenderPosition.BEFOREEND);
-// };
 
 const renderEvents = (
     events,
