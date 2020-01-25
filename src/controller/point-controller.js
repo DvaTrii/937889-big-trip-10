@@ -37,6 +37,10 @@ export default class PointController {
       document.addEventListener(`keydown`, onEscKeyDown);
     });
 
+    this._eventEditComponent.setFavoriteButtonClickHandler(() => {
+
+    });
+
     this._eventEditComponent.setSubmitHandler(replaceEditToEvent());
 
     render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
