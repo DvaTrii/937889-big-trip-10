@@ -11,6 +11,7 @@ import {tripEvents} from "../mock/mock";
 const renderEvents = (
     events,
     container,
+    onDataChange,
     isDefaultSorting = true
 ) => {
 
@@ -30,7 +31,7 @@ const renderEvents = (
           : _event;
       })
       .forEach((_event) => {
-        new PointController(day.getElement().querySelector(`.trip-events__list`), _event).render();
+        new PointController(day.getElement().querySelector(`.trip-events__list`), onDataChange).render(_event);
       });
 
     render(container.getElement(), day, RenderPosition.BEFOREEND);
@@ -38,13 +39,15 @@ const renderEvents = (
 };
 
 export default class TripController {
-  constructor(container, events) {
+  constructor(container) {
     this._container = container;
 
     this._noEventsComponent = new NoEventsComponent();
-    this._tripInfoComponent = new TripInfoComponent(events);
     this._sorterComponent = new SorterComponent();
+    this._tripInfoComponent = null;
     this._tripContainerComponent = new TripContainerComponent();
+
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   render(events) {
@@ -53,6 +56,7 @@ export default class TripController {
     } else {
 
       const siteRouteElement = document.querySelector(`.trip-main`);
+      this._tripInfoComponent = new TripInfoComponent(events);
       render(siteRouteElement, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
 
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
@@ -78,9 +82,21 @@ export default class TripController {
         }
 
         this._tripContainerComponent.getElement().innerHTML = ``;
-        renderEvents(sortedEvents, this._tripContainerComponent, isDefaultSorting);
+        renderEvents(sortedEvents, this._tripContainerComponent, this._onDataChange, isDefaultSorting);
 
       });
     }
+  }
+
+  _onDataChange(taskController, oldData, newData) {
+    const index = this._tasks.findIndex((it) => it === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._tasks = [].concat(this._tasks.slice(0, index), newData, this._tasks.slice(index + 1));
+
+    taskController.render(this._tasks[index]);
   }
 }

@@ -12,6 +12,6 @@ render(siteMenuContainer, new FilterComponent(), RenderPosition.BEFOREEND);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 
-const tripController = new TripController(siteContentContainer, tripEvents);
+const tripController = new TripController(siteContentContainer);
 
 tripController.render(tripEvents);

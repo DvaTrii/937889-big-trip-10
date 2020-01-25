@@ -92,6 +92,7 @@ const generateTripEvent = () => {
     price: getRandomNumber(5, 120),
     offers: mixArray(mock.offers).slice(0, OFFERS_AMOUNT),
     description: getRandomDescription(),
+    isFavorite: Math.random() > 0.5,
     photos: Array(4)
       .fill(``)
       .map(getRandomPhoto)
