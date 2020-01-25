@@ -14,7 +14,7 @@ const renderEvents = (
     onDataChange,
     isDefaultSorting = true
 ) => {
-
+  const pointControllers = [];
   const dates = isDefaultSorting
     ? [...new Set(tripEvents.map((it) => new Date(it.startDate).toDateString()))]
     : [true];
@@ -31,11 +31,17 @@ const renderEvents = (
           : _event;
       })
       .forEach((_event) => {
-        new PointController(day.getElement().querySelector(`.trip-events__list`), onDataChange).render(_event);
+        const pointController = new PointController(
+            day.getElement().querySelector(`.trip-events__list`),
+            onDataChange);
+        pointController.render(_event);
+        pointControllers.push(pointController);
       });
 
     render(container.getElement(), day, RenderPosition.BEFOREEND);
   });
+
+  return pointControllers;
 };
 
 export default class TripController {
