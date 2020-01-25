@@ -38,7 +38,6 @@ export default class PointController {
     });
 
     this._eventEditComponent.setFavoriteButtonClickHandler(() => {
-
     });
 
     this._eventEditComponent.setSubmitHandler(replaceEditToEvent());
