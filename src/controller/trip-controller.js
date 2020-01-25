@@ -3,6 +3,7 @@ import SorterComponent, {SortType} from "../components/sorter.js";
 import TripContainerComponent from "../components/trip-container.js";
 import TripDayComponent from "../components/trip-day.js";
 import NoEventsComponent from '../components/no-events.js';
+import PointController from "./point-controller.js";
 
 import {render, RenderPosition} from "../utils/render.js";
 import {tripEvents} from "../mock/mock";
@@ -29,7 +30,7 @@ const renderEvents = (
           : _event;
       })
       .forEach((_event) => {
-        renderEvent(_event, day.getElement().querySelector(`.trip-events__list`));
+        new PointController(day.getElement().querySelector(`.trip-events__list`), _event).render();
       });
 
     render(container.getElement(), day, RenderPosition.BEFOREEND);
