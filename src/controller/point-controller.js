@@ -3,13 +3,15 @@ import EventEditComponent from "../components/event-editor.js";
 import {render, RenderPosition, replace} from "../utils/render.js";
 
 export default class PointController {
-  constructor(container, event) {
+  constructor(container, onDataChange) {
     this._container = container;
-    this._eventComponent = new EventComponent(event);
-    this._eventEditComponent = new EventEditComponent(event);
+    this._eventComponent = null;
+    this._eventEditComponent = null;
+
+    this._onDataChange = onDataChange;
   }
 
-  render() {
+  render(event) {
     const onEscKeyDown = (evt) => {
       const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
@@ -19,24 +21,24 @@ export default class PointController {
       }
     };
 
-    const dayEvent = this._eventComponent;
-    const dayEditEvent = this._eventEditComponent;
+    this._eventComponent = new EventComponent(event);
+    this._eventEditComponent = new EventEditComponent(event);
 
     const replaceEventToEdit = () => {
-      replace(dayEditEvent, dayEvent);
+      replace(this._eventEditComponent, this._eventComponent);
     };
 
     const replaceEditToEvent = () => {
-      replace(dayEvent, dayEditEvent);
+      replace(this._eventComponent, this._eventEditComponent);
     };
 
-    dayEvent.setClickHandler(() => {
+    this._eventComponent.setClickHandler(() => {
       replaceEventToEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
     });
 
-    dayEditEvent.setSubmitHandler(replaceEditToEvent());
+    this._eventEditComponent.setSubmitHandler(replaceEditToEvent());
 
-    render(this._container, dayEvent, RenderPosition.BEFOREEND);
+    render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
   }
 }

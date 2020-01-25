@@ -106,8 +106,3 @@ const generateTripEvents = (amount) => {
 };
 
 export const tripEvents = generateTripEvents(EVENTS_AMOUNT);
-
-export const dates = [
-  ...new Set(tripEvents.map((it) => new Date(it.startDate).toDateString()))
-];
-
