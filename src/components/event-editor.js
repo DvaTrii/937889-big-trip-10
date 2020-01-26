@@ -1,5 +1,6 @@
 import {formatDateTime} from "../utils/common.js";
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstrtact-smart-component";
+import {pointType} from "../const.js";
 
 const createOfferMarkup = (offer) => {
   const {offerType, title, offerPrice, isChecked} = offer;
@@ -103,7 +104,7 @@ const createEditEventTemplate = (dayEvent) => {
 
             <div class="event__field-group  event__field-group--destination">
               <label class="event__label  event__type-output" for="event-destination-1">
-                ${type}
+                ${pointType[type]}
               </label>
               <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${place}" list="destination-list-1">
               <datalist id="destination-list-1">
@@ -180,10 +181,21 @@ const createEditEventTemplate = (dayEvent) => {
   );
 };
 
-export default class EventEdit extends AbstractComponent {
+export default class EventEdit extends AbstractSmartComponent {
   constructor(dayEvent) {
     super();
     this._dayEvent = dayEvent;
+    this._pointType = Object.values(dayEvent.type);
+
+    this._subscribeOnEvents();
+  }
+
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
   }
 
   getTemplate() {
@@ -196,5 +208,16 @@ export default class EventEdit extends AbstractComponent {
 
   setFavoriteButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, handler);
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.event__type-list`)
+      .addEventListener(`change`, (evt) => {
+        this._pointType[evt.target.value] = evt.target.checked;
+
+        this.rerender();
+      });
   }
 }
