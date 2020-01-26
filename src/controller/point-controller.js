@@ -35,9 +35,12 @@ export default class PointController {
     });
 
     this._eventEditComponent.setFavoriteButtonClickHandler(() => {
-      this._onDataChange(this, event, Object.assign({}, event, {
-        isFavorite: !event.isFavorite,
-      }));
+      const newEvent = Object.assign({}, event, {isFavorite: !event.isFavorite});
+      this._onDataChange(this, event, newEvent);
+      // =======================================
+      // не уверен что на документе надо искать
+      // =======================================
+      document.querySelector(`.event__favorite-checkbox`).toggleAttribute(`checked`);
     });
 
     this._eventEditComponent.setSubmitHandler((evt) => {

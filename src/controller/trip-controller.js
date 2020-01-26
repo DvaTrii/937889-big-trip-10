@@ -50,6 +50,7 @@ export default class TripController {
   constructor(container) {
     this._container = container;
     this._showedEventControllers = [];
+    this._events = null;
 
     this._noEventsComponent = new NoEventsComponent();
     this._sorterComponent = new SorterComponent();
@@ -64,6 +65,8 @@ export default class TripController {
     if (events.length === 0) {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
     } else {
+
+      this._events = events;
 
       const siteRouteElement = document.querySelector(`.trip-main`);
       this._tripInfoComponent = new TripInfoComponent(events);
@@ -98,16 +101,15 @@ export default class TripController {
     }
   }
 
-  _onDataChange(taskController, oldData, newData) {
-    const index = this._tasks.findIndex((it) => it === oldData);
-
+  _onDataChange(pointController, oldData, newData) {
+    const index = this._events.findIndex((it) => it === oldData);
     if (index === -1) {
       return;
     }
 
-    this._tasks = [].concat(this._tasks.slice(0, index), newData, this._tasks.slice(index + 1));
+    this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
 
-    taskController.render(this._tasks[index]);
+    pointController.render(this._events[index]);
   }
 
   _onViewChange() {
