@@ -198,12 +198,21 @@ export default class EventEdit extends AbstractSmartComponent {
     super.rerender();
   }
 
+  reset() {
+  // из-за того что не знаю как обратиться к значению и вернуть его в изначальное
+    this.rerender();
+  }
+
   getTemplate() {
     return createEditEventTemplate(this._dayEvent);
   }
 
   setSubmitHandler(handler) {
     this.getElement().querySelector(`form`).addEventListener(`submit`, handler);
+  }
+
+  setClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
   }
 
   setFavoriteButtonClickHandler(handler) {
@@ -214,7 +223,7 @@ export default class EventEdit extends AbstractSmartComponent {
     const element = this.getElement();
 
     element.querySelector(`.event__type-list`)
-      .addEventListener(`change`, (evt) => {
+      .addEventListener(`onchange`, (evt) => {
         this._pointType[evt.target.value] = evt.target.checked;
 
         this.rerender();

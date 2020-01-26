@@ -12,6 +12,7 @@ const renderEvents = (
     events,
     container,
     onDataChange,
+    onViewChange,
     isDefaultSorting = true
 ) => {
   const pointControllers = [];
@@ -47,6 +48,7 @@ const renderEvents = (
 export default class TripController {
   constructor(container) {
     this._container = container;
+    this._showedEventControllers = [];
 
     this._noEventsComponent = new NoEventsComponent();
     this._sorterComponent = new SorterComponent();
@@ -54,6 +56,7 @@ export default class TripController {
     this._tripContainerComponent = new TripContainerComponent();
 
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
   }
 
   render(events) {
@@ -88,7 +91,7 @@ export default class TripController {
         }
 
         this._tripContainerComponent.getElement().innerHTML = ``;
-        renderEvents(sortedEvents, this._tripContainerComponent, this._onDataChange, isDefaultSorting);
+        renderEvents(sortedEvents, this._tripContainerComponent, this._onDataChange, this._onViewChange, isDefaultSorting);
 
       });
     }
@@ -104,5 +107,9 @@ export default class TripController {
     this._tasks = [].concat(this._tasks.slice(0, index), newData, this._tasks.slice(index + 1));
 
     taskController.render(this._tasks[index]);
+  }
+
+  _onViewChange() {
+    this._showedEventControllers.forEach((it) => it.setDefaultView());
   }
 }
