@@ -40,7 +40,10 @@ export default class PointController {
       }));
     });
 
-    this._eventEditComponent.setSubmitHandler(this._replaceEditToEvent());
+    this._eventEditComponent.setSubmitHandler((evt) => {
+      evt.preventDefault();
+      this._replaceEditToEvent();
+    });
     this._eventEditComponent.setClickHandler(() => {
       this._replaceEditToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);

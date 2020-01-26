@@ -34,7 +34,8 @@ const renderEvents = (
       .forEach((_event) => {
         const pointController = new PointController(
             day.getElement().querySelector(`.trip-events__list`),
-            onDataChange);
+            onDataChange,
+            onViewChange);
         pointController.render(_event);
         pointControllers.push(pointController);
       });
@@ -71,7 +72,7 @@ export default class TripController {
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
       render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
 
-      renderEvents(events, this._tripContainerComponent);
+      this._showedEventControllers = renderEvents(events, this._tripContainerComponent, this._onDataChange, this._onViewChange);
 
       this._sorterComponent.setSortTypeChangeHandler((sortType) => {
         let isDefaultSorting = false;
@@ -91,7 +92,7 @@ export default class TripController {
         }
 
         this._tripContainerComponent.getElement().innerHTML = ``;
-        renderEvents(sortedEvents, this._tripContainerComponent, this._onDataChange, this._onViewChange, isDefaultSorting);
+        this._showedEventControllers = renderEvents(sortedEvents, this._tripContainerComponent, this._onDataChange, this._onViewChange, isDefaultSorting);
 
       });
     }
