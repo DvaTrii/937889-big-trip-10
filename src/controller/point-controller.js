@@ -37,11 +37,6 @@ export default class PointController {
     this._eventEditComponent.setFavoriteButtonClickHandler(() => {
       const newEvent = Object.assign({}, event, {isFavorite: !event.isFavorite});
       this._onDataChange(this, event, newEvent);
-      // =======================================
-      // не уверен что правильно ищу на элементе
-      // =======================================
-      const element = this._eventEditComponent.getElement();
-      element.querySelector(`.event__favorite-checkbox`).toggleAttribute(`checked`);
     });
 
     this._eventEditComponent.setSubmitHandler((evt) => {
