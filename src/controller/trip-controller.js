@@ -106,7 +106,6 @@ export default class TripController {
     if (index === -1) {
       return;
     }
-
     this._events = [].concat(this._events.slice(0, index), newData, this._events.slice(index + 1));
 
     pointController.render(this._events[index]);

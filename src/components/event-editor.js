@@ -23,8 +23,8 @@ const createPhotoMarkup = (photoSource) => {
   );
 };
 
-const createEditEventTemplate = (dayEvent) => {
-  const {type, place, startDate, endDate, price, offers, description, photos} = dayEvent;
+const createEditEventTemplate = (dayEvent, eventType) => {
+  const {place, startDate, endDate, price, offers, description, photos} = dayEvent;
 
   const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
 
@@ -37,7 +37,7 @@ const createEditEventTemplate = (dayEvent) => {
             <div class="event__type-wrapper">
               <label class="event__type  event__type-btn" for="event-type-toggle-1">
                 <span class="visually-hidden">Choose event type</span>
-                <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+                <img class="event__type-icon" width="17" height="17" src="img/icons/${eventType}.png" alt="Event type icon">
               </label>
               <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -46,37 +46,44 @@ const createEditEventTemplate = (dayEvent) => {
                   <legend class="visually-hidden">Transfer</legend>
 
                   <div class="event__type-item">
-                    <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
+                    <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi"
+                     ${eventType === `taxi` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
                   </div>
 
                   <div class="event__type-item">
-                    <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
+                    <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus"
+                    ${eventType === `bus` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
                   </div>
 
                   <div class="event__type-item">
-                    <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
+                    <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train"
+                    ${eventType === `train` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
                   </div>
 
                   <div class="event__type-item">
-                    <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
+                    <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship"
+                    ${eventType === `ship` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
                   </div>
 
                   <div class="event__type-item">
-                    <input id="event-type-transport-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="transport">
+                    <input id="event-type-transport-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="transport"
+                    ${eventType === `transport` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--transport" for="event-type-transport-1">Transport</label>
                   </div>
 
                   <div class="event__type-item">
-                    <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
+                    <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive"
+                    ${eventType === `drive` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
                   </div>
 
                   <div class="event__type-item">
-                    <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight">
+                    <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight"
+                    ${eventType === `flight` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
                   </div>
                 </fieldset>
@@ -85,17 +92,20 @@ const createEditEventTemplate = (dayEvent) => {
                   <legend class="visually-hidden">Activity</legend>
 
                   <div class="event__type-item">
-                    <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
+                    <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in"
+                    ${eventType === `check-in` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
                   </div>
 
                   <div class="event__type-item">
-                    <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
+                    <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing"
+                    ${eventType === `sightseeing` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
                   </div>
 
                   <div class="event__type-item">
-                    <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
+                    <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant"
+                    ${eventType === `restaurant` ? `checked` : ``}>
                     <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
                   </div>
                 </fieldset>
@@ -104,7 +114,7 @@ const createEditEventTemplate = (dayEvent) => {
 
             <div class="event__field-group  event__field-group--destination">
               <label class="event__label  event__type-output" for="event-destination-1">
-                ${pointType[type]}
+                ${pointType[eventType]}
               </label>
               <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${place}" list="destination-list-1">
               <datalist id="destination-list-1">
@@ -185,7 +195,7 @@ export default class EventEdit extends AbstractSmartComponent {
   constructor(dayEvent) {
     super();
     this._dayEvent = dayEvent;
-    this._pointType = Object.values(dayEvent.type);
+    this._pointType = dayEvent.type;
 
     this._subscribeOnEvents();
   }
@@ -204,7 +214,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._dayEvent);
+    return createEditEventTemplate(this._dayEvent, this._pointType);
   }
 
   setSubmitHandler(handler) {
@@ -223,10 +233,11 @@ export default class EventEdit extends AbstractSmartComponent {
     const element = this.getElement();
 
     element.querySelector(`.event__type-list`)
-      .addEventListener(`onchange`, (evt) => {
-        this._pointType[evt.target.value] = evt.target.checked;
-
-        this.rerender();
+      .addEventListener(`click`, (evt) => {
+        if (evt.target.tagName === `INPUT`) {
+          this._pointType = evt.target.value;
+          this.rerender();
+        }
       });
   }
 }

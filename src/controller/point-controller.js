@@ -38,15 +38,17 @@ export default class PointController {
       const newEvent = Object.assign({}, event, {isFavorite: !event.isFavorite});
       this._onDataChange(this, event, newEvent);
       // =======================================
-      // не уверен что на документе надо искать
+      // не уверен что правильно ищу на элементе
       // =======================================
-      document.querySelector(`.event__favorite-checkbox`).toggleAttribute(`checked`);
+      const element = this._eventEditComponent.getElement();
+      element.querySelector(`.event__favorite-checkbox`).toggleAttribute(`checked`);
     });
 
     this._eventEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       this._replaceEditToEvent();
     });
+
     this._eventEditComponent.setClickHandler(() => {
       this._replaceEditToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
