@@ -25,8 +25,17 @@ export const customTime = (data) => {
   return moment(data).format(`HH:mm`);
 };
 
-export const durationTime = (startDate, endDate) => {
-  return (`${moment(endDate).diff(moment(startDate), `hours`)}` + `H` + ` ` + `${moment(endDate - startDate).format(`mm`)}` + `M`);
+export const getDurationTime = (startDate, endDate) => {
+  const getFormatNumber = (data, literal) => {
+    return data < 10 ? `0` + data + literal : data + literal;
+  };
+  const days = moment.duration(endDate - startDate).days();
+  const hours = moment.duration(endDate - startDate).hours();
+  const minutes = moment.duration(endDate - startDate).minutes();
+
+  return (`${days && getFormatNumber(days, `D`) + ` ` || ``}`
+    + `${hours && getFormatNumber(hours, `H`) + ` ` || `00H`}`
+    + `${minutes && getFormatNumber(minutes, `M`) + ` ` || `00M`}`);
 };
 
 // для trip-info

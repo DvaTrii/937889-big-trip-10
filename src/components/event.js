@@ -1,4 +1,4 @@
-import {castDateTime, customTime, durationTime} from "../utils/common.js";
+import {castDateTime, customTime, getDurationTime} from "../utils/common.js";
 import AbstractComponent from "./abstract-component.js";
 import {pointType} from "../const.js";
 
@@ -31,7 +31,7 @@ const createEventItemTemplate = (dayEvent) => {
           &mdash;
           <time class="event__end-time" datetime="${castDateTime(endDate)}">${customTime(endDate)}</time>
         </p>
-        <p class="event__duration">${durationTime(startDate, endDate)}</p>
+        <p class="event__duration">${getDurationTime(startDate, endDate)}</p>
       </div>
 
       <p class="event__price">
