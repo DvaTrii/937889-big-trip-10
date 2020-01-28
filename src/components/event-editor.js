@@ -1,3 +1,7 @@
+import flatpickr from 'flatpickr';
+import "flatpickr/dist/flatpickr.min.css";
+import "flatpickr/dist/themes/light.css";
+
 import {formatDateTime} from "../utils/common.js";
 import AbstractSmartComponent from "./abstrtact-smart-component";
 import {pointType} from "../const.js";
