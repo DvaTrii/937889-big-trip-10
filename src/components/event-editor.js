@@ -201,7 +201,10 @@ export default class EventEdit extends AbstractSmartComponent {
     super();
     this._dayEvent = dayEvent;
     this._pointType = dayEvent.type;
+    this._flatpickrStartDate = null;
+    this._flatpickrEndDate = null;
 
+    this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
@@ -211,10 +214,24 @@ export default class EventEdit extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
+
+    this._applyFlatpickr();
+  }
+
+  removeElement() {
+    if (this._flatpickrStartDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrStartDate = null;
+    }
+    if (this._flatpickrEndDate) {
+      this._flatpickrEndDate.destroy();
+      this._flatpickrEndDate = null;
+    }
+
+    super.removeElement();
   }
 
   reset() {
-  // из-за того что не знаю как обратиться к значению и вернуть его в изначальное
     this.rerender();
   }
 
@@ -232,6 +249,26 @@ export default class EventEdit extends AbstractSmartComponent {
 
   setFavoriteButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, handler);
+  }
+
+  _applyFlatpickr() {
+    const startDateElement = this.getElement().querySelector(`#event-start-time-1`);
+    this._flatpickrStartDate = flatpickr(startDateElement, {
+      altInput: true,
+      allowInput: true,
+      enableTime: true,
+      altFormat: `d/m/y H:i`,
+      defaultDate: this._dayEvent.startDate
+    });
+
+    const endDateElement = this.getElement().querySelector(`#event-end-time-1`);
+    this._flatpickrEndDate = flatpickr(endDateElement, {
+      altInput: true,
+      allowInput: true,
+      enableTime: true,
+      altFormat: `d/m/y H:i`,
+      defaultDate: this._dayEvent.endDate
+    });
   }
 
   _subscribeOnEvents() {
