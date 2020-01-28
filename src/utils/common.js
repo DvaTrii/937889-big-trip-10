@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {monthNames} from "../const";
 
 const castDateFormat = (value) => {
