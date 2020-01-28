@@ -28,3 +28,12 @@ export const customTime = (data) => {
 export const durationTime = (startDate, endDate) => {
   return (`${moment(endDate).diff(moment(startDate), `hours`)}` + `H` + ` ` + `${moment(endDate - startDate).format(`mm`)}` + `M`);
 };
+
+// для trip-info
+export const customMonth = (data) => {
+  return moment(data).format(`MMM`);
+};
+
+export const getFormatDate = (data) => {
+  return moment(data).format(`DD`);
+};
