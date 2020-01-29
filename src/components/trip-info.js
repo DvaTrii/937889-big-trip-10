@@ -1,5 +1,6 @@
-import {monthNames} from "../const";
 import AbstractComponent from "./abstract-component.js";
+import {getFormatDate} from "../utils/common.js";
+import {customMonth} from "../utils/common.js";
 
 const createTripInfoTemplate = (data) => {
 
@@ -8,10 +9,10 @@ const createTripInfoTemplate = (data) => {
         <div class="trip-info__main">
             <h1 class="trip-info__title">${data[0].place} &mdash; ... &mdash; ${data[data.length - 1].place}</h1>
 
-             <p class="trip-info__dates">${monthNames[new Date(data[0].startDate).getMonth()]}&nbsp;
-                                         ${new Date(data[0].startDate).getDate()}&nbsp;&mdash;&nbsp;
-                                         ${(monthNames[new Date(data[0].startDate).getMonth()] === monthNames[new Date(data[data.length - 1].endDate).getMonth()] ? `` : monthNames[new Date(data[data.length - 1].endDate).getMonth()] + ` `)}
-                                         ${new Date(data[data.length - 1].endDate).getDate()}</p>
+             <p class="trip-info__dates">${customMonth(data[0].startDate)}&nbsp;
+                                         ${getFormatDate(data[0].startDate)}&nbsp;&mdash;&nbsp;
+                                         ${(customMonth(data[0].startDate) === customMonth(data[data.length - 1].endDate) ? `` : customMonth(data[data.length - 1].endDate) + ` `)}
+                                         ${getFormatDate(data[data.length - 1].endDate)}</p>
         </div>
         <p class="trip-info__cost">
                   Total: &euro;&nbsp;<span class="trip-info__cost-value">${data.reduce((acc, {price}) => acc + price, 0)}</span>
