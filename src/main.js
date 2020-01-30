@@ -1,6 +1,6 @@
 import SiteMenuComponent from "./components/site-menu.js";
 import FilterComponent from "./components/filters.js";
-import TripController from "./controller/trip-controller.js";
+import TripController from "./controllers/trip-controller.js";
 
 import {tripEvents} from "./mock/mock.js";
 import {render, RenderPosition} from "./utils/render.js";
