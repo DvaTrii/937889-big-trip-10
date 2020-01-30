@@ -47,10 +47,10 @@ const renderEvents = (
 };
 
 export default class TripController {
-  constructor(container) {
+  constructor(container, pointsModel) {
     this._container = container;
+    this._pointsModel = pointsModel;
     this._showedEventControllers = [];
-    this._events = null;
 
     this._noEventsComponent = new NoEventsComponent();
     this._sorterComponent = new SorterComponent();
@@ -61,7 +61,9 @@ export default class TripController {
     this._onViewChange = this._onViewChange.bind(this);
   }
 
-  render(events) {
+  render() {
+    const events = this._pointsModel.getPoints();
+
     if (events.length === 0) {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
     } else {
