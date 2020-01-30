@@ -16,6 +16,6 @@ const siteContentContainer = document.querySelector(`.trip-events`);
 const pointsModel = new PointsModel();
 pointsModel.setPoints(tripEvents);
 
-const tripController = new TripController(siteContentContainer);
+const tripController = new TripController(siteContentContainer, pointsModel);
 
-tripController.render(tripEvents);
+tripController.render();

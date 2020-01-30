@@ -51,6 +51,7 @@ export default class TripController {
     this._container = container;
     this._pointsModel = pointsModel;
     this._showedEventControllers = [];
+    this._events = null;
 
     this._noEventsComponent = new NoEventsComponent();
     this._sorterComponent = new SorterComponent();
