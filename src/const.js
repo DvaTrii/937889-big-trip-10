@@ -1,7 +1,3 @@
-export const monthNames = [
-  `Jan`, `Feb`, `Mar`, `Apr`, `May`, `Jun`, `Jul`, `Aug`, `Sep`, `Oct`, `Nov`, `Dec`
-];
-
 export const pointType = {
   'taxi': `Taxi to`,
   'bus': `Bus to`,
@@ -13,4 +9,10 @@ export const pointType = {
   'check-in': `Check-in to`,
   'sightseeing': `Sightseeing at`,
   'restaurant': `Restaurant in`,
+};
+
+export const FilterType = {
+  EVERYTHING: `Everything`,
+  FUTURE: `Future`,
+  PAST: `Past`
 };
