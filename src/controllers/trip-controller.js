@@ -80,7 +80,7 @@ export default class TripController {
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
       render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
 
-      this._showedPointControllers = renderPoints(events, this._tripContainerComponent, this._onDataChange, this._onViewChange);
+      this._renderPoints(events);
 
       this._sorterComponent.setSortTypeChangeHandler((sortType) => {
         let isDefaultSorting = false;
@@ -104,6 +104,10 @@ export default class TripController {
 
       });
     }
+  }
+
+  _renderPoints(points) {
+    this._showedPointControllers = renderPoints(points, this._tripContainerComponent, this._onDataChange, this._onViewChange);
   }
 
   createPoint() {
