@@ -2,7 +2,7 @@ import EventComponent from "../components/event.js";
 import EventEditComponent from "../components/event-editor.js";
 import {render, remove, replace, RenderPosition} from "../utils/render.js";
 
-const Mode = {
+export const Mode = {
   ADDING: `adding`,
   DEFAULT: `default`,
   EDIT: `edit`,
