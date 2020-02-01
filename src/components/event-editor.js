@@ -1,6 +1,7 @@
 import flatpickr from 'flatpickr';
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
+import he from 'he';
 
 import {formatDateTime} from "../utils/common.js";
 import AbstractSmartComponent from "./abstrtact-smart-component";
@@ -33,6 +34,8 @@ const createEditEventTemplate = (dayEvent, eventType) => {
   const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
+
+  const encodedDescription = he.encode(description);
 
   return (
     `<li class="trip-events__item">
@@ -180,7 +183,7 @@ const createEditEventTemplate = (dayEvent, eventType) => {
 
             <section class="event__section  event__section--destination">
               <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-              <p class="event__destination-description">${description}</p>
+              <p class="event__destination-description">${encodedDescription}</p>
 
               <div class="event__photos-container">
                 <div class="event__photos-tape">
@@ -196,6 +199,18 @@ const createEditEventTemplate = (dayEvent, eventType) => {
   );
 };
 
+const parseFormData = (formData) => {
+  return {
+    type: formData.get(`event-type`),
+    place: formData.get(`event-destination`),
+    startDate: formData.get(`event-start-time`),
+    endDate: formData.get(`event-end-time`),
+    price: formData.get(`event-price`),
+    offers: ``,
+    isFavorite: !!formData.get(`event-favorite`),
+  };
+};
+
 export default class EventEdit extends AbstractSmartComponent {
   constructor(dayEvent) {
     super();
@@ -203,6 +218,7 @@ export default class EventEdit extends AbstractSmartComponent {
     this._pointType = dayEvent.type;
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
+    this._deleteButtonClickHandler = null;
 
     this._applyFlatpickr();
     this._subscribeOnEvents();
@@ -210,6 +226,7 @@ export default class EventEdit extends AbstractSmartComponent {
 
   recoveryListeners() {
     this._subscribeOnEvents();
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
   }
 
   rerender() {
@@ -239,6 +256,13 @@ export default class EventEdit extends AbstractSmartComponent {
     return createEditEventTemplate(this._dayEvent, this._pointType);
   }
 
+  getData() {
+    const form = this.getElement().querySelector(`.event--edit`);
+    const formData = new FormData(form);
+
+    return parseFormData(formData);
+  }
+
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
   }
@@ -249,6 +273,13 @@ export default class EventEdit extends AbstractSmartComponent {
 
   setFavoriteButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, handler);
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
   }
 
   _applyFlatpickr() {
