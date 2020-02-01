@@ -7,8 +7,18 @@ import {tripEvents} from "./mock/mock.js";
 import {render, RenderPosition} from "./utils/render.js";
 
 const siteMenuContainer = document.querySelector(`.trip-controls`);
+const siteMenuComponent = new SiteMenuComponent();
 
-render(siteMenuContainer, new SiteMenuComponent(), RenderPosition.BEFOREEND);
+// Быстрое решение для подписки на клик по кнопке.
+// Это противоречит нашей архитектуре работы с DOM-элементами, но это временное решение.
+// Совсем скоро мы создадим полноценный компонент для работы с меню.
+
+siteMenuComponent.getElement().querySelector(`.trip-main__event-add-btn`)
+  .addEventListener(`click`, () => {
+    tripController.createPoint();
+  });
+
+render(siteMenuContainer, siteMenuComponent, RenderPosition.BEFOREEND);
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 
