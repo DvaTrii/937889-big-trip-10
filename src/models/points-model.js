@@ -43,6 +43,11 @@ export default class PointsModel {
     return true;
   }
 
+  addTask(point) {
+    this._points = [].concat(point, this._points);
+    this._callHandlers(this._dataChangeHandlers);
+  }
+
   setFilterChangeHandler(handler) {
     this._filterChangeHandlers.push(handler);
   }
