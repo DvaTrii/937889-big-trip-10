@@ -39,10 +39,8 @@ export default class PointController {
       this._onDataChange(this, event, newEvent);
     });
 
-    this._eventEditComponent.setSubmitHandler((evt) => {
-      evt.preventDefault();
-      this._replaceEditToEvent();
-    });
+    this._eventEditComponent.setSubmitHandler(() => this._replaceEditToEvent());
+
 
     this._eventEditComponent.setClickHandler(() => {
       this._replaceEditToEvent();
