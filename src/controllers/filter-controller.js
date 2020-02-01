@@ -20,7 +20,7 @@ export default class FilterController {
   render() {
     const container = this._container;
 
-    const filters = FilterType.map((filterType) => {
+    const filters = Object.values(FilterType).map((filterType) => {
       return {
         name: filterType,
         checked: filterType === this._activeFilterType
