@@ -35,7 +35,7 @@ const createEditEventTemplate = (dayEvent, eventType) => {
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
 
-  const encodedDescription = he.encode(description);
+  // const encodedDescription = he.encode(description);
 
   return (
     `<li class="trip-events__item">
@@ -183,7 +183,7 @@ const createEditEventTemplate = (dayEvent, eventType) => {
 
             <section class="event__section  event__section--destination">
               <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-              <p class="event__destination-description">${encodedDescription}</p>
+              <p class="event__destination-description">${description}</p>
 
               <div class="event__photos-container">
                 <div class="event__photos-tape">
@@ -199,14 +199,16 @@ const createEditEventTemplate = (dayEvent, eventType) => {
   );
 };
 
-const parseFormData = (formData) => {
+const parseFormData = (formData, offers, photos, description) => {
   return {
     type: formData.get(`event-type`),
     place: formData.get(`event-destination`),
     startDate: formData.get(`event-start-time`),
     endDate: formData.get(`event-end-time`),
     price: formData.get(`event-price`),
-    offers: ``,
+    offers, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время
+    photos, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время
+    description,
     isFavorite: !!formData.get(`event-favorite`),
   };
 };
@@ -216,6 +218,10 @@ export default class EventEdit extends AbstractSmartComponent {
     super();
     this._dayEvent = dayEvent;
     this._pointType = dayEvent.type;
+    this._pointOffers = dayEvent.offers;
+    this._pointPhotos = dayEvent.photos;
+    this._pointDescription = dayEvent.description;
+
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
     this._deleteButtonClickHandler = null;
@@ -260,7 +266,7 @@ export default class EventEdit extends AbstractSmartComponent {
     const form = this.getElement().querySelector(`.event--edit`);
     const formData = new FormData(form);
 
-    return parseFormData(formData);
+    return parseFormData(formData, this._pointOffers, this._pointPhotos, this._pointDescription);
   }
 
   setSubmitHandler(handler) {
