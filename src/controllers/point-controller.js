@@ -48,6 +48,11 @@ export default class PointController {
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
+    this._eventEditComponent.setClickHandler(() => {
+      this._replaceEditToEvent();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
+    });
+
     this._eventEditComponent.setFavoriteButtonClickHandler(() => {
       const newEvent = Object.assign({}, point, {isFavorite: !point.isFavorite});
       this._onDataChange(this, point, newEvent);
@@ -80,11 +85,6 @@ export default class PointController {
         render(this._container, this._eventEditComponent, RenderPosition.AFTERBEGIN);
         break;
     }
-
-    this._eventEditComponent.setClickHandler(() => {
-      this._replaceEditToEvent();
-      document.removeEventListener(`keydown`, this._onEscKeyDown);
-    });
   }
 
   setDefaultView() {
