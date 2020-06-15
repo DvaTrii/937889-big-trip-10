@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "flatpickr": "4.6.3",
-    "he": "^1.2.0",
     "moment": "2.24.0"
   }
 }
