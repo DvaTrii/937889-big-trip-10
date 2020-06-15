@@ -6,7 +6,7 @@ import NoEventsComponent from '../components/no-events.js';
 import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point-controller.js";
 
 import {render, RenderPosition} from "../utils/render.js";
-import {tripEvents} from "../mock/mock";
+// import {tripEvents} from "../mock/mock";
 
 const renderPoints = (
     events,
@@ -17,7 +17,7 @@ const renderPoints = (
 ) => {
   const pointControllers = [];
   const dates = isDefaultSorting
-    ? [...new Set(tripEvents.map((it) => new Date(it.startDate).toDateString()))]
+    ? [...new Set(events.map((it) => new Date(it.startDate).toDateString()))]
     : [true];
 
   dates.forEach((date, dateIndex) => {
@@ -120,6 +120,7 @@ export default class TripController {
   }
 
   _removePoints() {
+    this._tripContainerComponent.getElement().innerHTML = ``;
     this._showedPointControllers.forEach((el) => el.destroy());
     this._showedPointControllers = [];
   }
