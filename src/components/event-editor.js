@@ -225,7 +225,7 @@ export default class EventEdit extends AbstractSmartComponent {
     this._flatpickrEndDate = null;
     this._deleteButtonClickHandler = null;
     this._submitHandler = null;
-    this._clickHandler = null;
+    this._rollUpBtnClickHandler = null;
 
     this._applyFlatpickr();
     this._subscribeOnEvents();
@@ -235,7 +235,7 @@ export default class EventEdit extends AbstractSmartComponent {
     this._subscribeOnEvents();
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this.setSubmitHandler(this._submitHandler);
-    this.setClickHandler(this._clickHandler);
+    this.setRollupBtnClickHandler(this._rollUpBtnClickHandler);
   }
 
   rerender() {
@@ -277,7 +277,7 @@ export default class EventEdit extends AbstractSmartComponent {
     this._submitHandler = handler;
   }
 
-  setClickHandler(handler) {
+  setRollupBtnClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
     this._clickHandler = handler;
   }
