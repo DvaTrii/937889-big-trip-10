@@ -279,7 +279,8 @@ export default class EventEdit extends AbstractSmartComponent {
 
   setRollupBtnClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
-    this._clickHandler = handler;
+
+    this._rollUpBtnClickHandler = handler;
   }
 
   setFavoriteButtonClickHandler(handler) {
