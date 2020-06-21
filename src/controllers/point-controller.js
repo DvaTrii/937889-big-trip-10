@@ -9,10 +9,10 @@ export const Mode = {
 };
 
 export const EmptyPoint = {
-  type: ``,
+  type: `taxi`,
   place: ``,
-  startDate: null,
-  endDate: null,
+  startDate: Date.now(),
+  endDate: Date.now(),
   price: ``,
   offers: [],
   description: ``,

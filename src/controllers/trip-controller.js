@@ -6,7 +6,6 @@ import NoEventsComponent from '../components/no-events.js';
 import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point-controller.js";
 
 import {render, RenderPosition} from "../utils/render.js";
-// import {tripEvents} from "../mock/mock";
 
 const renderPoints = (
     events,

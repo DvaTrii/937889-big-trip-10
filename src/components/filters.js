@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component.js";
 
-const FILTER_ID_PREFIX = `filter__`;
+const FILTER_ID_PREFIX = `filter_`;
 
 const getFilterNameById = (id) => {
   return id.substring(FILTER_ID_PREFIX.length);
@@ -26,8 +26,7 @@ export const createFiltersTemplate = (filters) => {
   const filtersMarkup = filters.map((it) => createFilterMarkup(it)).join(`\n`);
 
   return (
-    `<h2 class="visually-hidden">Filter events</h2>
-     <form class="trip-filters" action="#" method="get">
+    `<form class="trip-filters" action="#" method="get">
         ${filtersMarkup}
         <button class="visually-hidden" type="submit">Accept filter</button>
      </form>`
