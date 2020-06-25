@@ -52,16 +52,16 @@ const createEventItemTemplate = (dayEvent) => {
 };
 
 export default class Event extends AbstractComponent {
-  constructor(dayEvent) {
+  constructor(point) {
     super();
-    this._dayEvent = dayEvent;
+    this._point = point;
   }
 
   getTemplate() {
-    return createEventItemTemplate(this._dayEvent);
+    return createEventItemTemplate(this._point);
   }
 
-  setRollupBtnClickHandler(handler) {
+  setRollupButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
   }
 }

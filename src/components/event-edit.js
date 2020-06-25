@@ -205,7 +205,7 @@ const parseFormData = (formData, offers, photos, description) => {
     startDate: formData.get(`event-start-time`),
     endDate: formData.get(`event-end-time`),
     price: formData.get(`event-price`),
-    offers, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время
+    offers, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время через points.map(it => it.offers)
     photos, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время
     description,
     isFavorite: !!formData.get(`event-favorite`),
@@ -213,13 +213,13 @@ const parseFormData = (formData, offers, photos, description) => {
 };
 
 export default class EventEdit extends AbstractSmartComponent {
-  constructor(dayEvent) {
+  constructor(point) {
     super();
-    this._dayEvent = dayEvent;
-    this._pointType = dayEvent.type;
-    this._pointOffers = dayEvent.offers;
-    this._pointPhotos = dayEvent.photos;
-    this._pointDescription = dayEvent.description;
+    this._point = point;
+    this._pointType = point.type;
+    this._pointOffers = point.offers;
+    this._pointPhotos = point.photos;
+    this._pointDescription = point.description;
 
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -228,14 +228,14 @@ export default class EventEdit extends AbstractSmartComponent {
     this._rollUpBtnClickHandler = null;
 
     this._applyFlatpickr();
-    this._subscribeOnEvents();
+    this._setEventType();
   }
 
   recoveryListeners() {
-    this._subscribeOnEvents();
+    this._setEventType();
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this.setSubmitHandler(this._submitHandler);
-    this.setRollupBtnClickHandler(this._rollUpBtnClickHandler);
+    this.setRollupButtonClickHandler(this._rollUpBtnClickHandler);
   }
 
   rerender() {
@@ -262,7 +262,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._dayEvent, this._pointType);
+    return createEditEventTemplate(this._point, this._pointType);
   }
 
   getData() {
@@ -277,9 +277,8 @@ export default class EventEdit extends AbstractSmartComponent {
     this._submitHandler = handler;
   }
 
-  setRollupBtnClickHandler(handler) {
+  setRollupButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
-
     this._rollUpBtnClickHandler = handler;
   }
 
@@ -288,9 +287,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   setDeleteButtonClickHandler(handler) {
-    this.getElement().querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, handler);
-
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, handler);
     this._deleteButtonClickHandler = handler;
   }
 
@@ -301,7 +298,7 @@ export default class EventEdit extends AbstractSmartComponent {
       allowInput: true,
       enableTime: true,
       altFormat: `d/m/y H:i`,
-      defaultDate: this._dayEvent.startDate
+      defaultDate: this._point.startDate
     });
 
     const endDateElement = this.getElement().querySelector(`#event-end-time-1`);
@@ -310,19 +307,19 @@ export default class EventEdit extends AbstractSmartComponent {
       allowInput: true,
       enableTime: true,
       altFormat: `d/m/y H:i`,
-      defaultDate: this._dayEvent.endDate
+      defaultDate: this._point.endDate
     });
   }
 
-  _subscribeOnEvents() {
+  _setEventType() {
     const element = this.getElement();
 
-    element.querySelector(`.event__type-list`)
-      .addEventListener(`click`, (evt) => {
-        if (evt.target.tagName === `INPUT`) {
-          this._pointType = evt.target.value;
-          this.rerender();
-        }
-      });
+    element.querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
+      if (evt.target.tagName === `INPUT`) {
+        this._pointType = evt.target.value;
+
+        this.rerender();
+      }
+    });
   }
 }
