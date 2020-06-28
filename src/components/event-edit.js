@@ -34,8 +34,6 @@ const createEditEventTemplate = (dayEvent, eventType) => {
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
 
-  // const encodedDescription = he.encode(description);
-
   return (
     `<li class="trip-events__item">
         <form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -164,13 +162,13 @@ const createEditEventTemplate = (dayEvent, eventType) => {
               </svg>
             </label>
 
-            <button class="event__rollup-btn" type="button">
+            ${place ? `<button class="event__rollup-btn" type="button">
               <span class="visually-hidden">Open event</span>
-            </button>
+            </button>` : ``}
           </header>
-          <section class="event__details">
+          ${place ? `<section class="event__details">
 
-            <section class="event__section  event__section--offers">
+            ${offers ? `<section class="event__section  event__section--offers">
               <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
               <div class="event__available-offers">
@@ -178,9 +176,9 @@ const createEditEventTemplate = (dayEvent, eventType) => {
                 ${offersMarkup}
 
               </div>
-            </section>
+            </section>` : ``}
 
-            <section class="event__section  event__section--destination">
+            ${description ? `<section class="event__section  event__section--destination">
               <h3 class="event__section-title  event__section-title--destination">Destination</h3>
               <p class="event__destination-description">${description}</p>
 
@@ -191,8 +189,8 @@ const createEditEventTemplate = (dayEvent, eventType) => {
 
                 </div>
               </div>
-            </section>
-          </section>
+            </section>` : ``}
+          </section>` : ``}
         </form>
     </li>`
   );
@@ -205,7 +203,7 @@ const parseFormData = (formData, offers, photos, description) => {
     startDate: formData.get(`event-start-time`),
     endDate: formData.get(`event-end-time`),
     price: formData.get(`event-price`),
-    offers, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время через points.map(it => it.offers)
+    offers, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время через offers.map(offer => offer.checked)
     photos, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время
     description,
     isFavorite: !!formData.get(`event-favorite`),
@@ -278,8 +276,11 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   setRollupButtonClickHandler(handler) {
-    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
-    this._rollUpBtnClickHandler = handler;
+    const rollupButtonElement = this.getElement().querySelector(`.event__rollup-btn`);
+    if (rollupButtonElement) {
+      rollupButtonElement.addEventListener(`click`, handler);
+      this._rollUpBtnClickHandler = handler;
+    }
   }
 
   setFavoriteButtonClickHandler(handler) {

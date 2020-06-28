@@ -54,8 +54,7 @@ export default class PointController {
     });
 
     this._eventEditComponent.setFavoriteButtonClickHandler(() => {
-      const newEvent = Object.assign({}, point, {isFavorite: !point.isFavorite});
-      this._onDataChange(this, point, newEvent);
+      point.isFavorite = !point.isFavorite;
     });
 
     this._eventEditComponent.setSubmitHandler((evt) => {

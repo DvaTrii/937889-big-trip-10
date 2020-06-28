@@ -8,7 +8,7 @@ import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point-
 import {render, RenderPosition} from "../utils/render.js";
 
 const renderPoints = (
-    events,
+    points,
     container,
     onDataChange,
     onViewChange,
@@ -16,7 +16,7 @@ const renderPoints = (
 ) => {
   const pointControllers = [];
   const dates = isDefaultSorting
-    ? [...new Set(events.map((it) => new Date(it.startDate).toDateString()))]
+    ? [...new Set(points.map((it) => new Date(it.startDate).toDateString()))]
     : [true];
 
   dates.forEach((date, dateIndex) => {
@@ -24,18 +24,18 @@ const renderPoints = (
       ? new TripDayComponent(date, dateIndex)
       : new TripDayComponent();
 
-    events
-      .filter((_event) => {
+    points
+      .filter((_point) => {
         return isDefaultSorting
-          ? date === new Date(_event.startDate).toDateString()
-          : _event;
+          ? date === new Date(_point.startDate).toDateString()
+          : _point;
       })
-      .forEach((_event) => {
+      .forEach((_point) => {
         const pointController = new PointController(
             day.getElement().querySelector(`.trip-events__list`),
             onDataChange,
             onViewChange);
-        pointController.render(_event, PointControllerMode.DEFAULT);
+        pointController.render(_point, PointControllerMode.DEFAULT);
         pointControllers.push(pointController);
       });
 
@@ -50,7 +50,7 @@ export default class TripController {
     this._container = container;
     this._pointsModel = pointsModel;
     this._showedPointControllers = [];
-    this._events = null;
+    this._points = null;
     this._creatingPoint = null;
 
     this._noEventsComponent = new NoEventsComponent();
@@ -64,22 +64,20 @@ export default class TripController {
   }
 
   render() {
-    const events = this._pointsModel.getPoints();
+    this._points = this._pointsModel.getPoints();
 
-    if (events.length === 0) {
+    if (this._points.length === 0) {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
     } else {
 
-      this._events = events;
-
-      const siteRouteElement = document.querySelector(`.trip-main`);
-      this._tripInfoComponent = new TripInfoComponent(events);
-      render(siteRouteElement, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
+      const siteTripElement = document.querySelector(`.trip-main`);
+      this._tripInfoComponent = new TripInfoComponent(this._points);
+      render(siteTripElement, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
 
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
       render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
 
-      this._renderPoints(events);
+      this._renderPoints(this._points);
 
       this._sorterComponent.setSortTypeChangeHandler((sortType) => {
         let isDefaultSorting = false;
@@ -87,14 +85,14 @@ export default class TripController {
 
         switch (sortType) {
           case SortType.EVENT_DOWN:
-            sortedEvents = events.slice();
+            sortedEvents = this._points.slice();
             isDefaultSorting = true;
             break;
           case SortType.PRICE_DOWN:
-            sortedEvents = events.slice().sort((a, b) => b.price - a.price);
+            sortedEvents = this._points.slice().sort((a, b) => b.price - a.price);
             break;
           case SortType.TIME_DOWN:
-            sortedEvents = events.slice().sort((a, b) => b.startDate - a.startDate);
+            sortedEvents = this._points.slice().sort((a, b) => b.startDate - a.startDate);
             break;
         }
 
