@@ -48,6 +48,6 @@ export const getFormatDate = (data) => {
 };
 
 // для фильтра
-export const isFutureDate = (date) => date > new Date();
+export const isFutureDate = (date) => date > Date.now();
 
-export const isPastDate = (date) => date < new Date();
+export const isPastDate = (date) => date < Date.now();

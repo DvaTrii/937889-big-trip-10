@@ -12,7 +12,7 @@ export const pointType = {
 };
 
 export const FilterType = {
-  EVERYTHING: `Everything`,
-  FUTURE: `Future`,
-  PAST: `Past`
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`
 };

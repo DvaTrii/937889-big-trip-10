@@ -61,6 +61,8 @@ export default class TripController {
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
+
+    this._pointsModel.setFilterChangeHandler(this._onFilterChange);
   }
 
   render() {
@@ -77,7 +79,7 @@ export default class TripController {
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
       render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
 
-      this._renderPoints(this._points);
+      this._showedPointControllers = renderPoints(this._pointsModel.getPoints(), this._tripContainerComponent, this._onDataChange, this._onViewChange);
 
       this._sorterComponent.setSortTypeChangeHandler((sortType) => {
         let isDefaultSorting = false;
@@ -103,10 +105,6 @@ export default class TripController {
     }
   }
 
-  _renderPoints(points) {
-    this._showedPointControllers = renderPoints(points, this._tripContainerComponent, this._onDataChange, this._onViewChange);
-  }
-
   createPoint() {
     if (this._creatingPoint) {
       return;
@@ -124,7 +122,7 @@ export default class TripController {
 
   _updatePoints() {
     this._removePoints();
-    this._renderPoints(this._pointsModel.getPoints());
+    this._showedPointControllers = renderPoints(this._pointsModel.getPoints(), this._tripContainerComponent, this._onDataChange, this._onViewChange);
   }
 
   _onDataChange(pointController, oldData, newData) {
