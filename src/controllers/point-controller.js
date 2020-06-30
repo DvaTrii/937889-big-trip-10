@@ -1,6 +1,7 @@
 import EventComponent from "../components/event.js";
 import EventEditComponent from "../components/event-edit.js";
 import {render, remove, replace, RenderPosition} from "../utils/render.js";
+import PointContainer from '../components/event-container.js';
 
 export const Mode = {
   ADDING: `adding`,
@@ -25,6 +26,7 @@ export default class PointController {
     this._container = container;
     this._eventComponent = null;
     this._eventEditComponent = null;
+    this._pointContainer = null;
 
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
@@ -35,7 +37,7 @@ export default class PointController {
   }
 
   render(point, mode) {
-
+    this._pointContainer = new PointContainer();
     const oldEventComponent = this._eventComponent;
     const oldEventEditComponent = this._eventEditComponent;
 
@@ -72,7 +74,8 @@ export default class PointController {
           replace(this._eventEditComponent, oldEventEditComponent);
           this._replaceEditToEvent();
         } else {
-          render(this._container, this._eventComponent, RenderPosition.BEFOREEND);
+          render(this._container, this._pointContainer, RenderPosition.BEFOREEND);
+          render(this._pointContainer.getElement(), this._eventComponent, RenderPosition.BEFOREEND);
         }
         break;
       case Mode.ADDING:

@@ -4,7 +4,6 @@ import TripContainerComponent from "../components/trip-container.js";
 import TripDayComponent from "../components/trip-day.js";
 import NoEventsComponent from '../components/no-events.js';
 import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point-controller.js";
-// import PointContainer from '../components/event-container.js';
 
 import {render, RenderPosition} from "../utils/render.js";
 
@@ -32,11 +31,8 @@ const renderPoints = (
           : _point;
       })
       .forEach((_point) => {
-        // const pointContainer = new PointContainer();
-        // render(day.getElement().querySelector(`.trip-events__list`), pointContainer, RenderPosition.BEFOREEND);
         const pointController = new PointController(
             day.getElement().querySelector(`.trip-events__list`),
-            //  pointContainer.getElement().querySelector(`.trip-events__item`),
             onDataChange,
             onViewChange);
         pointController.render(_point, PointControllerMode.DEFAULT);
