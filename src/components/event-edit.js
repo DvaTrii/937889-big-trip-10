@@ -262,8 +262,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getData() {
-    const form = this.getElement().querySelector(`.event--edit`);
-    const formData = new FormData(form);
+    const formData = new FormData(this.getElement());
 
     return parseFormData(formData, this._pointOffers, this._pointPhotos, this._pointDescription);
   }
