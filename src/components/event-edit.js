@@ -5,6 +5,7 @@ import "flatpickr/dist/themes/light.css";
 import {formatDateTime} from "../utils/common.js";
 import AbstractSmartComponent from "./abstrtact-smart-component";
 import {pointType} from "../const.js";
+import {CITIES} from "../mock/mock.js";
 
 const createOfferMarkup = (offer) => {
   const {offerType, title, offerPrice, isChecked} = offer;
@@ -21,6 +22,12 @@ const createOfferMarkup = (offer) => {
   );
 };
 
+const createDestinationMarkup = (city) => {
+  return (
+    `<option value="${city}"></option>`
+  );
+};
+
 const createPhotoMarkup = (photoSource) => {
   return (
     `<img class="event__photo" src="${photoSource}" alt="Event photo">`
@@ -33,6 +40,8 @@ const createEditEventTemplate = (dayEvent, eventType) => {
   const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
+
+  const citiesMarkup = CITIES.map((it) => createDestinationMarkup(it)).join(`\n`);
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -121,10 +130,7 @@ const createEditEventTemplate = (dayEvent, eventType) => {
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${place}" list="destination-list-1">
           <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
-            <option value="Saint Petersburg"></option>
+            ${citiesMarkup}
           </datalist>
         </div>
 
@@ -197,7 +203,7 @@ const createEditEventTemplate = (dayEvent, eventType) => {
 const parseFormData = (formData, offers, photos, description) => {
   return {
     type: formData.get(`event-type`),
-    place: formData.get(`event-destination`),
+    city: formData.get(`event-destination`),
     startDate: formData.get(`event-start-time`),
     endDate: formData.get(`event-end-time`),
     price: formData.get(`event-price`),

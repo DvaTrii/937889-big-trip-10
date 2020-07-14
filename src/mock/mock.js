@@ -108,3 +108,4 @@ const generateTripEvents = (amount) => {
 };
 
 export const tripEvents = generateTripEvents(EVENTS_AMOUNT);
+export const CITIES = mock.cities;
