@@ -203,7 +203,7 @@ const createEditEventTemplate = (dayEvent, eventType) => {
 const parseFormData = (formData, offers, photos, description) => {
   return {
     type: formData.get(`event-type`),
-    city: formData.get(`event-destination`),
+    place: formData.get(`event-destination`),
     startDate: formData.get(`event-start-time`),
     endDate: formData.get(`event-end-time`),
     price: formData.get(`event-price`),

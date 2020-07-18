@@ -138,6 +138,7 @@ export default class TripController {
         const destroyedPoint = this._showedPointControllers.pop();
         destroyedPoint.destroy();
         this._showedPointControllers = [].concat(pointController, this._showedPointControllers);
+        this._updatePoints();
       }
     } else if (newData === null) {
       this._pointsModel.removePoint(oldData.id);
