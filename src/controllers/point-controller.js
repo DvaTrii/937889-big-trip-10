@@ -11,6 +11,11 @@ export const Mode = {
 
 export const newEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
+const INPUT_NAME_PREFIX = `event-offer-`;
+
+const getOfferNameByInputName = (name) => {
+  return name.substring(INPUT_NAME_PREFIX.length);
+};
 
 export const EmptyPoint = {
   type: `taxi`,
@@ -60,6 +65,18 @@ export default class PointController {
 
     this._eventEditComponent.setFavoriteButtonClickHandler(() => {
       point.isFavorite = !point.isFavorite;
+    });
+
+    this._eventEditComponent.setOfferButtonClickHandler((evt) => {
+      evt.target.toggleAttribute(`checked`);
+
+      const offerName = getOfferNameByInputName(evt.target.name);
+
+      point.offers.forEach((it) => {
+        if (evt.target.tagName === `INPUT` && it.offerType === offerName) {
+          it.isChecked = evt.target.checked;
+        }
+      });
     });
 
     this._eventEditComponent.setSubmitHandler((evt) => {

@@ -227,7 +227,8 @@ export default class EventEdit extends AbstractSmartComponent {
     this._flatpickrEndDate = null;
     this._deleteButtonClickHandler = null;
     this._submitHandler = null;
-    this._rollUpBtnClickHandler = null;
+    this._rollUpButtonClickHandler = null;
+    this._setOfferButtonClickHandler = null;
 
     this._applyFlatpickr();
     this._setEventType();
@@ -237,7 +238,8 @@ export default class EventEdit extends AbstractSmartComponent {
     this._setEventType();
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this.setSubmitHandler(this._submitHandler);
-    this.setRollupButtonClickHandler(this._rollUpBtnClickHandler);
+    this.setRollupButtonClickHandler(this._rollUpButtonClickHandler);
+    this.setOfferButtonClickHandler(this._setOfferButtonClickHandler);
   }
 
   rerender() {
@@ -282,12 +284,20 @@ export default class EventEdit extends AbstractSmartComponent {
     const rollupButtonElement = this.getElement().querySelector(`.event__rollup-btn`);
     if (rollupButtonElement) {
       rollupButtonElement.addEventListener(`click`, handler);
-      this._rollUpBtnClickHandler = handler;
+      this._rollUpButtonClickHandler = handler;
     }
   }
 
   setFavoriteButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, handler);
+  }
+
+  setOfferButtonClickHandler(handler) {
+    this.getElement().querySelectorAll(`.event__offer-checkbox`)
+      .forEach((it) => {
+        it.addEventListener(`click`, handler);
+      });
+    this._setOfferButtonClickHandler = handler;
   }
 
   setDeleteButtonClickHandler(handler) {
