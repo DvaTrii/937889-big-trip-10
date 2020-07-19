@@ -7,7 +7,7 @@ const createTripInfoTemplate = (data) => {
   return (
     `<section class="trip-main__trip-info  trip-info">
         <div class="trip-info__main">
-            <h1 class="trip-info__title">${data[0].place} &mdash; ... &mdash; ${data[data.length - 1].place}</h1>
+            <h1 class="trip-info__title">${data[0].place} &mdash; ${data.length <= 2 ? data[1].place : `...`} &mdash; ${data[data.length - 1].place}</h1>
 
              <p class="trip-info__dates">${customMonth(data[0].startDate)}&nbsp;
                                          ${getFormatDate(data[0].startDate)}&nbsp;&mdash;&nbsp;
