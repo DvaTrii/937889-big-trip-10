@@ -132,7 +132,7 @@ export default class TripController {
         pointController.destroy();
         this._updatePoints();
       } else {
-        this._pointsModel.addTask(newData);
+        this._pointsModel.addPoint(newData);
         pointController.render(newData, PointControllerMode.DEFAULT);
 
         const destroyedPoint = this._showedPointControllers.pop();
