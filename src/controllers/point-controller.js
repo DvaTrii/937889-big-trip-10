@@ -9,6 +9,9 @@ export const Mode = {
   EDIT: `edit`,
 };
 
+export const newEventButton = document.querySelector(`.trip-main__event-add-btn`);
+
+
 export const EmptyPoint = {
   type: `taxi`,
   place: ``,
@@ -63,9 +66,13 @@ export default class PointController {
       evt.preventDefault();
       const data = this._eventEditComponent.getData();
       this._onDataChange(this, point, data);
+      newEventButton.disabled = false;
     });
 
-    this._eventEditComponent.setDeleteButtonClickHandler(() => this._onDataChange(this, point, null));
+    this._eventEditComponent.setDeleteButtonClickHandler(() => {
+      this._onDataChange(this, point, null);
+      newEventButton.disabled = false;
+    });
 
     switch (mode) {
       case Mode.DEFAULT:
@@ -85,6 +92,7 @@ export default class PointController {
         }
         document.addEventListener(`keydown`, this._onEscKeyDown);
         render(this._container, this._eventEditComponent, RenderPosition.AFTERBEGIN);
+        newEventButton.disabled = true;
         break;
     }
   }
@@ -125,6 +133,7 @@ export default class PointController {
 
       this._replaceEditToEvent();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
+      newEventButton.disabled = false;
     }
   }
 }
