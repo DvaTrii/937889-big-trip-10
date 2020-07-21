@@ -4,6 +4,11 @@ import {customMonth} from "../utils/common.js";
 
 const createTripInfoTemplate = (data) => {
 
+  const pointsPrice = (points) => points.reduce((acc, {price}) => acc + Number(price), 0);
+  const allOffersPrice = (points) => points.map((it) => it.offers.filter((iit) => iit.isChecked)
+                                                                     .reduce((accum, {offerPrice}) => accum + Number(offerPrice), 0))
+                                           .reduce((acc, price) => acc + price, 0);
+
   return (
     `<section class="trip-main__trip-info  trip-info">
         <div class="trip-info__main">
@@ -15,7 +20,7 @@ const createTripInfoTemplate = (data) => {
                                          ${getFormatDate(data[data.length - 1].endDate)}</p>
         </div>
         <p class="trip-info__cost">
-                  Total: &euro;&nbsp;<span class="trip-info__cost-value">${data.reduce((acc, {price}) => acc + price, 0)}</span>
+                  Total: &euro;&nbsp;<span class="trip-info__cost-value">${pointsPrice(data) + allOffersPrice(data)}</span>
         </p>
     </section>`
   );

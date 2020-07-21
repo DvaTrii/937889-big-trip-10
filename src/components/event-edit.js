@@ -200,7 +200,7 @@ const createEditEventTemplate = (dayEvent, eventType) => {
   );
 };
 
-const parseFormData = (formData, offers, photos, description) => {
+const parseFormData = (formData, offers, photos, description, id) => {
   return {
     type: formData.get(`event-type`),
     place: formData.get(`event-destination`),
@@ -210,6 +210,7 @@ const parseFormData = (formData, offers, photos, description) => {
     offers, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время через offers.map(offer => offer.checked)
     photos, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время
     description,
+    id,
     isFavorite: !!formData.get(`event-favorite`),
   };
 };
@@ -222,6 +223,7 @@ export default class EventEdit extends AbstractSmartComponent {
     this._pointOffers = point.offers;
     this._pointPhotos = point.photos;
     this._pointDescription = point.description;
+    this._pointId = point.id;
 
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -272,7 +274,7 @@ export default class EventEdit extends AbstractSmartComponent {
   getData() {
     const formData = new FormData(this.getElement());
 
-    return parseFormData(formData, this._pointOffers, this._pointPhotos, this._pointDescription);
+    return parseFormData(formData, this._pointOffers, this._pointPhotos, this._pointDescription, this._pointId);
   }
 
   setSubmitHandler(handler) {

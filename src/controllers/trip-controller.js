@@ -5,7 +5,7 @@ import TripDayComponent from "../components/trip-day.js";
 import NoEventsComponent from '../components/no-events.js';
 import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point-controller.js";
 
-import {render, RenderPosition} from "../utils/render.js";
+import {render, remove, RenderPosition} from "../utils/render.js";
 
 const renderPoints = (
     points,
@@ -56,7 +56,10 @@ export default class TripController {
     this._noEventsComponent = new NoEventsComponent();
     this._sorterComponent = new SorterComponent();
     this._tripInfoComponent = null;
+    this._oldTripInfoComponent = null;
     this._tripContainerComponent = new TripContainerComponent();
+    this._siteTripElement = document.querySelector(`.trip-main`);
+
 
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -72,9 +75,7 @@ export default class TripController {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
     } else {
 
-      const siteTripElement = document.querySelector(`.trip-main`);
-      this._tripInfoComponent = new TripInfoComponent(this._points);
-      render(siteTripElement, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
+      this._renderTripInfo();
 
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
       render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
@@ -123,6 +124,7 @@ export default class TripController {
   _updatePoints() {
     this._removePoints();
     this._showedPointControllers = renderPoints(this._pointsModel.getPoints(), this._tripContainerComponent, this._onDataChange, this._onViewChange);
+    this._renderTripInfo();
   }
 
   _onDataChange(pointController, oldData, newData) {
@@ -133,10 +135,6 @@ export default class TripController {
         this._updatePoints();
       } else {
         this._pointsModel.addPoint(newData);
-        // pointController.render(newData, PointControllerMode.DEFAULT);
-        //
-        // const destroyedPoint = this._showedPointControllers.pop();
-        // destroyedPoint.destroy();
         this._showedPointControllers = [].concat(pointController, this._showedPointControllers);
         this._updatePoints();
       }
@@ -147,8 +145,21 @@ export default class TripController {
       const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
       if (isSuccess) {
         pointController.render(newData, PointControllerMode.DEFAULT);
+        this._renderTripInfo();
       }
     }
+  }
+
+  _renderTripInfo() {
+    this._points = this._pointsModel.getPoints();
+
+    if (this._oldTripInfoComponent) {
+      remove(this._oldTripInfoComponent);
+    }
+
+    this._tripInfoComponent = new TripInfoComponent(this._points);
+    this._oldTripInfoComponent = this._tripInfoComponent;
+    render(this._siteTripElement, this._oldTripInfoComponent, RenderPosition.AFTERBEGIN);
   }
 
   _onViewChange() {
