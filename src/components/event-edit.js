@@ -34,7 +34,7 @@ const createPhotoMarkup = (photoSource) => {
   );
 };
 
-const createEditEventTemplate = (dayEvent, eventType) => {
+const createEditEventTemplate = (dayEvent, eventType, pointPlace) => {
   const {place, startDate, endDate, price, offers, description, isFavorite, photos} = dayEvent;
 
   const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
@@ -156,7 +156,7 @@ const createEditEventTemplate = (dayEvent, eventType) => {
           <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
         </div>
 
-        <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+        <button class="event__save-btn  btn  btn--blue" type="submit" ${pointPlace ? `` : `disabled`}>Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
         <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite"
         ${isFavorite ? `checked` : ``}>
@@ -220,6 +220,7 @@ export default class EventEdit extends AbstractSmartComponent {
     super();
     this._point = point;
     this._pointType = point.type;
+    this._pointPlace = point.place;
     this._pointOffers = point.offers;
     this._pointPhotos = point.photos;
     this._pointDescription = point.description;
@@ -233,11 +234,11 @@ export default class EventEdit extends AbstractSmartComponent {
     this._setOfferButtonClickHandler = null;
 
     this._applyFlatpickr();
-    this._setEventType();
+    this._subscribeOnEvents();
   }
 
   recoveryListeners() {
-    this._setEventType();
+    this._subscribeOnEvents();
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this.setSubmitHandler(this._submitHandler);
     this.setRollupButtonClickHandler(this._rollUpButtonClickHandler);
@@ -268,7 +269,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._point, this._pointType);
+    return createEditEventTemplate(this._point, this._pointType, this._pointPlace);
   }
 
   getData() {
@@ -327,7 +328,7 @@ export default class EventEdit extends AbstractSmartComponent {
     });
   }
 
-  _setEventType() {
+  _subscribeOnEvents() {
     const element = this.getElement();
 
     element.querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
@@ -336,6 +337,10 @@ export default class EventEdit extends AbstractSmartComponent {
 
         this.rerender();
       }
+    });
+
+    element.querySelector(`.event__input`).addEventListener(`input`, (evt) => {
+      element.querySelector(`.event__save-btn`).disabled = evt.target.value.length <= 0;
     });
   }
 }
