@@ -110,7 +110,7 @@ export default class PointController {
         this._eventEditComponent.reset();
         this._onViewChange();
         document.addEventListener(`keydown`, this._onEscKeyDown);
-        render(this._container, this._eventEditComponent, RenderPosition.AFTERBEGIN);
+        render(document.querySelector(`.trip-days`), this._eventEditComponent, RenderPosition.AFTERBEGIN);
         newEventButton.disabled = true;
         break;
     }
