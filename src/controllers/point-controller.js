@@ -50,8 +50,7 @@ export default class PointController {
     const oldEventEditComponent = this._eventEditComponent;
 
     this._eventComponent = new EventComponent(point);
-    this._eventEditComponent = new EventEditComponent(point);
-    this._mode = mode;
+    this._eventEditComponent = new EventEditComponent(point, mode);
 
     this._eventComponent.setRollupButtonClickHandler(() => {
       this._replaceEventToEdit();

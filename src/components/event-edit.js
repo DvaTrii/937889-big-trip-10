@@ -6,6 +6,7 @@ import {formatDateTime} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component";
 import {pointType} from "../const.js";
 import {CITIES} from "../mock/mock.js";
+import {Mode as PointControllerMode} from "../controllers/point-controller.js";
 
 const createOfferMarkup = (offer) => {
   const {offerType, title, offerPrice, isChecked} = offer;
@@ -34,7 +35,7 @@ const createPhotoMarkup = (photoSource) => {
   );
 };
 
-const createEditEventTemplate = (dayEvent, eventType, pointPlace) => {
+const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
   const {place, startDate, endDate, price, offers, description, isFavorite, photos} = dayEvent;
 
   const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
@@ -167,7 +168,7 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace) => {
           </svg>
         </label>
 
-        ${place ? `<button class="event__rollup-btn" type="button">
+        ${mode !== PointControllerMode.ADDING ? `<button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>` : ``}
       </header>
@@ -216,7 +217,7 @@ const parseFormData = (formData, offers, photos, description, id) => {
 };
 
 export default class EventEdit extends AbstractSmartComponent {
-  constructor(point) {
+  constructor(point, mode) {
     super();
     this._point = point;
     this._pointType = point.type;
@@ -225,6 +226,8 @@ export default class EventEdit extends AbstractSmartComponent {
     this._pointPhotos = point.photos;
     this._pointDescription = point.description;
     this._pointId = point.id;
+
+    this._mode = mode;
 
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -269,7 +272,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._point, this._pointType, this._pointPlace);
+    return createEditEventTemplate(this._point, this._pointType, this._pointPlace, this._mode);
   }
 
   getData() {
