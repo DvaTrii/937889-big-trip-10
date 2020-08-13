@@ -1,13 +1,20 @@
 import AbstractComponent from "./abstract-component.js";
+import {MenuItems} from "../const.js";
 
+const createMenuItemsMarkup = (menuItems) => {
+  return menuItems.map((menuItem) => {
+    return (
+      `<a class="trip-tabs__btn" href="#">${menuItem}</a>`
+    );
+  }).join(`\n`);
+};
 
-const createSiteMenuTemplate = () => {
+const createSiteMenuTemplate = (menuItems) => {
   return (
     `<div>
        <h2 class="visually-hidden">Switch trip view</h2>
        <nav class="trip-controls__trip-tabs  trip-tabs">
-          <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
-          <a class="trip-tabs__btn" href="#">Stats</a>
+          ${createMenuItemsMarkup(menuItems)}
        </nav>
      </div>`
   );
@@ -15,6 +22,6 @@ const createSiteMenuTemplate = () => {
 
 export default class SiteMenu extends AbstractComponent {
   getTemplate() {
-    return createSiteMenuTemplate();
+    return createSiteMenuTemplate(Array.from(Object.values(MenuItems)));
   }
 }
