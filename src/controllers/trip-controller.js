@@ -68,6 +68,14 @@ export default class TripController {
     this._pointsModel.setFilterChangeHandler(this._onFilterChange);
   }
 
+  hide() {
+    this._container.hide();
+  }
+
+  show() {
+    this._container.show();
+  }
+
   render() {
     this._points = this._pointsModel.getPoints();
 
