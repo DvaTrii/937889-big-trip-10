@@ -5,7 +5,7 @@ import TripDayComponent from "../components/trip-day.js";
 import NoEventsComponent from '../components/no-events.js';
 import PointController, {Mode as PointControllerMode, EmptyPoint} from "./point-controller.js";
 
-import {render, remove, RenderPosition} from "../utils/render.js";
+import {render, RenderPosition} from "../utils/render.js";
 
 const renderPoints = (
     points,
@@ -50,13 +50,12 @@ export default class TripController {
     this._container = container;
     this._pointsModel = pointsModel;
     this._showedPointControllers = [];
-    this._points = null;
+    this._points = this._pointsModel.getPoints();
     this._creatingPoint = null;
 
     this._noEventsComponent = new NoEventsComponent();
     this._sorterComponent = new SorterComponent();
-    this._tripInfoComponent = null;
-    this._oldTripInfoComponent = null;
+    this._tripInfoComponent = new TripInfoComponent(this._points);
     this._tripContainerComponent = new TripContainerComponent();
     this._siteTripElement = document.querySelector(`.trip-main`);
 
@@ -78,14 +77,11 @@ export default class TripController {
 
 
   render() {
-    this._points = this._pointsModel.getPoints();
-
     if (this._points.length === 0) {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
     } else {
 
-      this._renderTripInfo();
-
+      render(this._siteTripElement, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
       render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
 
@@ -133,7 +129,7 @@ export default class TripController {
   _updatePoints() {
     this._removePoints();
     this._showedPointControllers = renderPoints(this._pointsModel.getPoints(), this._tripContainerComponent, this._onDataChange, this._onViewChange);
-    this._renderTripInfo();
+    this._tripInfoComponent.setNewPrice(this._pointsModel.getPoints());
   }
 
   _onDataChange(pointController, oldData, newData) {
@@ -154,21 +150,9 @@ export default class TripController {
       const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
       if (isSuccess) {
         pointController.render(newData, PointControllerMode.DEFAULT);
-        this._renderTripInfo();
+        this._tripInfoComponent.setNewPrice(this._pointsModel.getPoints());
       }
     }
-  }
-
-  _renderTripInfo() {
-    this._points = this._pointsModel.getPoints();
-
-    if (this._oldTripInfoComponent) {
-      remove(this._oldTripInfoComponent);
-    }
-
-    this._tripInfoComponent = new TripInfoComponent(this._points);
-    this._oldTripInfoComponent = this._tripInfoComponent;
-    render(this._siteTripElement, this._oldTripInfoComponent, RenderPosition.AFTERBEGIN);
   }
 
   _onViewChange() {

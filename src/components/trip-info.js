@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 import {getFormatDate} from "../utils/common.js";
 import {customMonth} from "../utils/common.js";
 
@@ -20,23 +20,33 @@ const createTripInfoTemplate = (data, price) => {
   );
 };
 
-export default class TripInfo extends AbstractComponent {
+export default class TripInfo extends AbstractSmartComponent {
   constructor(data) {
     super();
     this._data = data;
     this._price = this._countPrice(this._data);
   }
 
+  recoveryListeners() {
+    this._countPrice(this._data);
+  }
+
   getTemplate() {
     return createTripInfoTemplate(this._data, this._price);
   }
 
-  _countPrice() {
+  _countPrice(data) {
     const pointsPrice = (points) => points.reduce((acc, {price}) => acc + Number(price), 0);
     const allOffersPrice = (points) => points.map((point) => point.offers.filter((offer) => offer.isChecked)
       .reduce((accum, {offerPrice}) => accum + Number(offerPrice), 0))
       .reduce((acc, price) => acc + price, 0);
 
-    return pointsPrice(this._data) + allOffersPrice(this._data);
+    return pointsPrice(data) + allOffersPrice(data);
+  }
+
+  setNewPrice(data) {
+    this._price = this._countPrice(data);
+
+    this.rerender();
   }
 }
