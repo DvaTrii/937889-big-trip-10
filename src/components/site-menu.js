@@ -39,9 +39,9 @@ export default class SiteMenu extends AbstractComponent {
         return;
       }
 
-      this._currentMenuItem = MenuItems[evt.target.textContent.toUpperCase()];
+      this._currentSiteMenuItem = MenuItems[evt.target.textContent.toUpperCase()];
 
-      handler(this._currentMenuItem);
+      handler(this._currentSiteMenuItem);
 
       this._setItemActiveClass(evt.target);
     });

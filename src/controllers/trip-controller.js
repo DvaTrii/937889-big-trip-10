@@ -69,12 +69,13 @@ export default class TripController {
   }
 
   hide() {
-    this._container.hide();
+    this._container.classList.add(`trip-events--hidden`);
   }
 
   show() {
-    this._container.show();
+    this._container.classList.remove(`trip-events--hidden`);
   }
+
 
   render() {
     this._points = this._pointsModel.getPoints();
