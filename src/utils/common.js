@@ -46,3 +46,8 @@ export const customMonth = (data) => {
 export const getFormatDate = (data) => {
   return moment(data).format(`DD`);
 };
+
+// для фильтра
+export const isFutureDate = (date) => date > Date.now();
+
+export const isPastDate = (date) => date < Date.now();

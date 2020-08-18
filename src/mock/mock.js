@@ -85,6 +85,7 @@ const generateTripEvent = () => {
   const startDate = getRandomDate();
   const endDate = getRandomDate();
   return {
+    id: String(new Date() + Math.random()),
     type: getRandomArrayItem(mock.type),
     place: getRandomArrayItem(mock.cities),
     startDate: Math.min(startDate, endDate),
@@ -107,3 +108,4 @@ const generateTripEvents = (amount) => {
 };
 
 export const tripEvents = generateTripEvents(EVENTS_AMOUNT);
+export const CITIES = mock.cities;
