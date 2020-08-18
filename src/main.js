@@ -8,7 +8,9 @@ import {MenuItems} from "./const.js";
 
 import {render, RenderPosition} from "./utils/render.js";
 
-const api = new API();
+const AUTHORIZATION = `Basic dXNchar9yZAo=`;
+
+const api = new API(AUTHORIZATION);
 
 const pointsModel = new PointsModel();
 

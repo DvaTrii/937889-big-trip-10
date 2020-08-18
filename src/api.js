@@ -1,6 +1,15 @@
 const API = class {
+  constructor(authorization) {
+    this._authorization = authorization;
+  }
+
   getPoints() {
-    return fetch(`https://htmlacademy-es-10.appspot.com/big-trip/points`);
+    const headers = new Headers();
+    headers.append(`Authorization`, this._authorization);
+
+    return fetch(`https://htmlacademy-es-10.appspot.com/big-trip/points`,
+        {headers})
+      .then((response) => response.json());
   }
 };
 
