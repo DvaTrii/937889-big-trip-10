@@ -46,7 +46,7 @@ siteMenu.setSiteMenuItemClickHandler((currentSiteMenuItem) => {
 });
 
 
-api.getTasks()
+api.getPoints()
   .then((points) => {
     pointsModel.setPoints(points);
     tripController.render();
