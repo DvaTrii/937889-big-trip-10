@@ -51,12 +51,12 @@ export default class TripController {
     this._pointsModel = pointsModel;
     this._api = api;
     this._showedPointControllers = [];
-    this._points = this._pointsModel.getPoints();
+    this._points = [];
     this._creatingPoint = null;
 
     this._noEventsComponent = new NoEventsComponent();
     this._sorterComponent = new SorterComponent();
-    this._tripInfoComponent = new TripInfoComponent(this._points);
+    this._tripInfoComponent = null;
     this._tripContainerComponent = new TripContainerComponent();
     this._siteTripElement = document.querySelector(`.trip-main`);
 
@@ -78,10 +78,13 @@ export default class TripController {
 
 
   render() {
+    this._points = this._pointsModel.getPointsAll();
+
     if (this._points.length === 0) {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
     } else {
 
+      this._tripInfoComponent = new TripInfoComponent(this._points);
       render(this._siteTripElement, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
       render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
