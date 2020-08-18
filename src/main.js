@@ -22,7 +22,7 @@ const filterController = new FilterController(siteMenuContainer, pointsModel);
 filterController.render();
 
 const siteContentContainer = document.querySelector(`.trip-events`);
-const tripController = new TripController(siteContentContainer, pointsModel);
+const tripController = new TripController(siteContentContainer, pointsModel, api);
 
 const bodyContainer = document.querySelector(`.page-main .page-body__container`);
 const statisticsComponent = new StatisticsComponent();
