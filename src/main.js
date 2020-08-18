@@ -1,3 +1,4 @@
+import API from "./api.js";
 import SiteMenuComponent from "./components/site-menu.js";
 import StatisticsComponent from "./components/statistics.js";
 import TripController from "./controllers/trip-controller.js";
@@ -5,11 +6,11 @@ import FilterController from "./controllers/filter-controller.js";
 import PointsModel from "./models/points-model.js";
 import {MenuItems} from "./const.js";
 
-import {tripEvents} from "./mock/mock.js";
 import {render, RenderPosition} from "./utils/render.js";
 
+const api = new API();
+
 const pointsModel = new PointsModel();
-pointsModel.setPoints(tripEvents);
 
 const siteMenuContainer = document.querySelector(`.trip-controls`);
 const siteMenu = new SiteMenuComponent();
@@ -20,7 +21,6 @@ filterController.render();
 
 const siteContentContainer = document.querySelector(`.trip-events`);
 const tripController = new TripController(siteContentContainer, pointsModel);
-tripController.render();
 
 const bodyContainer = document.querySelector(`.page-main .page-body__container`);
 const statisticsComponent = new StatisticsComponent();
@@ -44,3 +44,10 @@ siteMenu.setSiteMenuItemClickHandler((currentSiteMenuItem) => {
       break;
   }
 });
+
+
+api.getTasks()
+  .then((points) => {
+    pointsModel.setPoints(points);
+    tripController.render();
+  });
