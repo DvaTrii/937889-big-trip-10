@@ -78,7 +78,7 @@ export default class TripController {
 
 
   render() {
-    this._points = this._pointsModel.getPointsAll();
+    this._points = this._pointsModel.getPoints();
 
     if (this._points.length === 0) {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);

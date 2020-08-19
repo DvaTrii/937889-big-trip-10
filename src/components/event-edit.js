@@ -8,16 +8,15 @@ import {pointType} from "../const.js";
 import {CITIES} from "../mock/mock.js";
 import {Mode as PointControllerMode} from "../controllers/point-controller.js";
 
-const createOfferMarkup = (offer) => {
-  const {offerType, title, offerPrice, isChecked} = offer;
-
+const createOfferMarkup = (offer, index) => {
+  const {price, title} = offer;
   return (
     `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}" ${isChecked ? `checked` : ``}>
-        <label class="event__offer-label" for="event-offer-${offerType}-1">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-type-${index}" type="checkbox" name="event-offer-type" checked>
+        <label class="event__offer-label" for="event-offer-type-${index}">
           <span class="event__offer-title">${title}</span>
           &plus;
-          &euro;&nbsp;<span class="event__offer-price">${offerPrice}</span>
+          &euro;&nbsp;<span class="event__offer-price">${price}</span>
         </label>
       </div>`
   );
@@ -29,16 +28,18 @@ const createDestinationMarkup = (city) => {
   );
 };
 
-const createPhotoMarkup = (photoSource) => {
+const createPhotoMarkup = (photo) => {
+  const {description, src} = photo;
+
   return (
-    `<img class="event__photo" src="${photoSource}" alt="Event photo">`
+    `<img class="event__photo" src="${src}" alt="${description}">`
   );
 };
 
 const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
   const {place, startDate, endDate, price, offers, description, isFavorite, photos} = dayEvent;
 
-  const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
+  const offersMarkup = offers.map((it, index) => createOfferMarkup(it, index)).join(`\n`);
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
 

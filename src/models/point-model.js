@@ -3,8 +3,8 @@ export default class Point {
     this.id = data[`id`];
     this.type = data[`type`];
     this.place = data[`destination`][`name`];
-    this.startDate = data[`date_from`];
-    this.endDate = data[`date_to`];
+    this.startDate = new Date(data[`date_from`]).getTime();
+    this.endDate = new Date(data[`date_to`]).getTime();
     this.price = data[`base_price`];
     this.offers = data[`offers`];
     this.description = data[`destination`][`description`];
