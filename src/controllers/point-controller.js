@@ -2,6 +2,7 @@ import EventComponent from "../components/event.js";
 import EventEditComponent from "../components/event-edit.js";
 import {render, remove, replace, RenderPosition} from "../utils/render.js";
 import PointContainer from '../components/event-container.js';
+import PointModel from "../models/point-model";
 
 export const Mode = {
   ADDING: `adding`,
@@ -27,6 +28,25 @@ export const EmptyPoint = {
   description: ``,
   isFavorite: false,
   photos: []
+};
+
+const parseFormData = ({formData, description, photos, offers, id}) => {
+
+  return new PointModel({
+    "base_price": formData.get(`event-price`),
+    "date_from": formData.get(`event-start-time-1`),
+    "date_to": formData.get(`event-end-time-1`),
+    "destination": {
+      "description": description,
+      "name": formData.get(`event-destination-1`),
+      "pictures": photos
+    },
+    "is_favorite": !!formData.get(`event-favorite`),
+    "offers": offers,
+    "type": formData.get(`event-type`),
+    "id": id
+  }
+  );
 };
 
 export default class PointController {
@@ -80,7 +100,7 @@ export default class PointController {
 
     this._eventEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
-      const data = this._eventEditComponent.getData();
+      const data = parseFormData(this._eventEditComponent.getData());
       this._onDataChange(this, point, data);
       newEventButton.disabled = false;
     });

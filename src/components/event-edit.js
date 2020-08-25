@@ -202,21 +202,6 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
   );
 };
 
-const parseFormData = (formData, offers, photos, description, id) => {
-  return {
-    type: formData.get(`event-type`),
-    place: formData.get(`event-destination`),
-    startDate: formData.get(`event-start-time`),
-    endDate: formData.get(`event-end-time`),
-    price: formData.get(`event-price`),
-    offers, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время через offers.map(offer => offer.checked)
-    photos, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время
-    description,
-    id,
-    isFavorite: !!formData.get(`event-favorite`),
-  };
-};
-
 export default class EventEdit extends AbstractSmartComponent {
   constructor(point, mode) {
     super();
@@ -277,9 +262,35 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getData() {
-    const formData = new FormData(this.getElement());
+    const form = this.getElement();
+    const formData = new FormData(form);
 
-    return parseFormData(formData, this._pointOffers, this._pointPhotos, this._pointDescription, this._pointId);
+    const offers = Array.from(document.querySelectorAll(`.event__offer-selector`))
+      .filter((offer) => offer.querySelector(`.event__offer-checkbox`).checked)
+      .map((item) => {
+        return {
+          title: item.querySelector(`.event__offer-price`).textContent,
+          price: Number(item.querySelector(`.event__offer-title`).textContent)
+        };
+      });
+
+    const photos = Array.from(document.querySelectorAll(`.event__photo`))
+      .map((item) => {
+        return {
+          src: item.src,
+          description: item.alt
+        };
+      });
+
+    const description = form.querySelector(`.event__destination-description`).textContent;
+
+    return {
+      formData,
+      offers,
+      photos,
+      description,
+      id: this._pointId
+    };
   }
 
   setSubmitHandler(handler) {
