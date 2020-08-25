@@ -27,15 +27,16 @@ const API = class {
   updatePoint(id, data) {
     const headers = new Headers();
     headers.append(`Authorization`, this._authorization);
+    headers.append(`Content-Type`, `application/json`);
 
     return fetch(`https://htmlacademy-es-10.appspot.com/big-trip/points/${id}`, {
       method: `PUT`,
-      body: JSON.stringify(data),
+      body: JSON.stringify(data.toRAW()),
       headers,
     })
       .then(checkStatus)
       .then((response) => response.json())
-      .then(Point.parsePoints);
+      .then(Point.parsePoint);
   }
 };
 
