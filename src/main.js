@@ -9,8 +9,9 @@ import {MenuItems} from "./const.js";
 import {render, RenderPosition} from "./utils/render.js";
 
 const AUTHORIZATION = `Basic dXNchar9yZAo=`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
 
-const api = new API(AUTHORIZATION);
+const api = new API(END_POINT, AUTHORIZATION);
 
 const pointsModel = new PointsModel();
 
