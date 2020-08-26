@@ -1,4 +1,5 @@
 import Point from "./models/point-model.js";
+import Store from "./store.js";
 
 const Method = {
   GET: `GET`,
@@ -27,6 +28,22 @@ const API = class {
     })
       .then((response) => response.json())
       .then(Point.parsePoints);
+  }
+
+  getDestinations() {
+    return this._load({
+      url: `destinations`
+    })
+      .then((response) => response.json())
+      .then(Store.setDestinations);
+  }
+
+  getOffers() {
+    return this._load({
+      url: `offers`
+    })
+      .then((response) => response.json())
+      .then(Store.setOffers);
   }
 
   updatePoint(id, data) {
