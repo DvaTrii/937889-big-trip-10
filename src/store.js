@@ -1,22 +1,17 @@
 export default class Store {
-  constructor() {
-    this._destinations = null;
-    this._offers = null;
-  }
-
   static setDestinations(items) {
-    this._destinations = items;
+    Store._destinations = items;
   }
 
   static setOffers(items) {
-    this._offers = items;
+    Store._offers = items;
   }
 
-  static getDestination() {
-    return this._destinations;
+  static getDestinations() {
+    return Store._destinations;
   }
 
   static getOffers() {
-    return this._offers;
+    return Store._offers;
   }
 }
