@@ -4,8 +4,8 @@ import "flatpickr/dist/themes/light.css";
 
 import {formatDateTime} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component";
+import Store from "../store.js";
 import {pointType} from "../const.js";
-import {CITIES} from "../mock/mock.js";
 import {Mode as PointControllerMode} from "../controllers/point-controller.js";
 
 const createOfferMarkup = (offer, index) => {
@@ -43,7 +43,7 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
 
-  const citiesMarkup = CITIES.map((it) => createDestinationMarkup(it)).join(`\n`);
+  const citiesMarkup = Store.getDestinations().map((it) => createDestinationMarkup(it.name)).join(`\n`);
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
