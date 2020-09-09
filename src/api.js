@@ -22,7 +22,7 @@ const API = class {
     this._authorization = authorization;
   }
 
-  getPoints() {
+  _getPoints() {
     return this._load({
       url: `points`
     })
@@ -30,7 +30,7 @@ const API = class {
       .then(Point.parsePoints);
   }
 
-  getDestinations() {
+  _getDestinations() {
     return this._load({
       url: `destinations`
     })
@@ -38,7 +38,7 @@ const API = class {
       .then(Store.setDestinations);
   }
 
-  getOffers() {
+  _getOffers() {
     return this._load({
       url: `offers`
     })
@@ -55,6 +55,14 @@ const API = class {
     })
       .then((response) => response.json())
       .then(Point.parsePoint);
+  }
+
+  getAllData() {
+    return [
+      this._getPoints(),
+      this._getDestinations(),
+      this._getOffers()
+    ];
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {

@@ -48,8 +48,8 @@ siteMenu.setSiteMenuItemClickHandler((currentSiteMenuItem) => {
   }
 });
 
-Promise.all([api.getDestinations(), api.getPoints()])
+Promise.all(api.getAllData())
   .then((values) => {
-    pointsModel.setPoints(values[1]);
+    pointsModel.setPoints(values[0]);
     tripController.render();
   });
