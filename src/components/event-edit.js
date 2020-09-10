@@ -9,7 +9,7 @@ import {pointType} from "../const.js";
 import {Mode as PointControllerMode} from "../controllers/point-controller.js";
 
 const createOfferMarkup = (offer, index) => {
-  const {price, title} = offer;
+  const {title, price} = offer;
   return (
     `<div class="event__offer-selector">
         <input class="event__offer-checkbox  visually-hidden" id="event-offer-type-${index}" type="checkbox" name="event-offer-type" checked>
@@ -36,10 +36,10 @@ const createPhotoMarkup = (photo) => {
   );
 };
 
-const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
+const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, mode) => {
   const {place, startDate, endDate, price, offers, description, isFavorite, photos} = dayEvent;
 
-  const offersMarkup = offers.map((it, index) => createOfferMarkup(it, index)).join(`\n`);
+  const offersMarkup = pointOffers.map((it, index) => createOfferMarkup(it, index)).join(`\n`);
 
   const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
 
@@ -258,7 +258,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._point, this._pointType, this._pointPlace, this._mode);
+    return createEditEventTemplate(this._point, this._pointType, this._pointPlace, this._pointOffers, this._mode);
   }
 
   getData() {
@@ -349,7 +349,7 @@ export default class EventEdit extends AbstractSmartComponent {
     element.querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
         this._pointType = evt.target.value;
-
+        this._pointOffers = Store.getOffers().find((offer) => offer.type === this._pointType).offers;
         this.rerender();
       }
     });
