@@ -36,12 +36,12 @@ const createPhotoMarkup = (photo) => {
   );
 };
 
-const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, mode) => {
+const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, pointPhotos, pointDescription, mode) => {
   const {place, startDate, endDate, price, offers, description, isFavorite, photos} = dayEvent;
 
   const offersMarkup = pointOffers.map((it, index) => createOfferMarkup(it, index)).join(`\n`);
 
-  const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
+  const photosMarkup = pointPhotos.map((it) => createPhotoMarkup(it)).join(`\n`);
 
   const citiesMarkup = Store.getDestinations().map((it) => createDestinationMarkup(it.name)).join(`\n`);
 
@@ -130,7 +130,7 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, m
           <label class="event__label  event__type-output" for="event-destination-1">
             ${pointType[eventType]}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${place}" list="destination-list-1">
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${pointPlace}" list="destination-list-1">
           <datalist id="destination-list-1">
             ${citiesMarkup}
           </datalist>
@@ -187,15 +187,16 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, m
 
         ${description ? `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${description}</p>
+          <p class="event__destination-description">${pointDescription}</p>
 
-          <div class="event__photos-container">
+          ${photos ? `<div class="event__photos-container">
             <div class="event__photos-tape">
 
               ${photosMarkup}
 
             </div>
-          </div>
+          </div>` : ``}
+
         </section>` : ``}
       </section>` : ``}
     </form>`
@@ -258,7 +259,7 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._point, this._pointType, this._pointPlace, this._pointOffers, this._mode);
+    return createEditEventTemplate(this._point, this._pointType, this._pointPlace, this._pointOffers, this._pointPhotos, this._pointDescription, this._mode);
   }
 
   getData() {
@@ -349,13 +350,25 @@ export default class EventEdit extends AbstractSmartComponent {
     element.querySelector(`.event__type-list`).addEventListener(`click`, (evt) => {
       if (evt.target.tagName === `INPUT`) {
         this._pointType = evt.target.value;
+
         this._pointOffers = Store.getOffers().find((offer) => offer.type === this._pointType).offers;
+
         this.rerender();
       }
     });
 
     element.querySelector(`.event__input`).addEventListener(`input`, (evt) => {
       element.querySelector(`.event__save-btn`).disabled = evt.target.value.length <= 0;
+    });
+
+    element.querySelector(`.event__input--destination`).addEventListener(`change`, (evt) => {
+      this._pointPlace = evt.target.value;
+
+      this._pointPhotos = Store.getDestinations().find((destination) => destination.name === this._pointPlace).pictures;
+
+      this._pointDescription = Store.getDestinations().find((destination) => destination.name === this._pointPlace).description;
+
+      this.rerender();
     });
   }
 }
