@@ -28,11 +28,11 @@ const parseFormData = ({formData, description, photos, offers, id}) => {
 
   return new PointModel({
     "base_price": formData.get(`event-price`),
-    "date_from": formData.get(`event-start-time-1`),
-    "date_to": formData.get(`event-end-time-1`),
+    "date_from": formData.get(`event-start-time`),
+    "date_to": formData.get(`event-end-time`),
     "destination": {
       "description": description,
-      "name": formData.get(`event-destination-1`),
+      "name": formData.get(`event-destination`),
       "pictures": photos
     },
     "is_favorite": !!formData.get(`event-favorite`),

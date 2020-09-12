@@ -270,8 +270,8 @@ export default class EventEdit extends AbstractSmartComponent {
       .filter((offer) => offer.querySelector(`.event__offer-checkbox`).checked)
       .map((item) => {
         return {
-          title: item.querySelector(`.event__offer-price`).textContent,
-          price: Number(item.querySelector(`.event__offer-title`).textContent)
+          title: item.querySelector(`.event__offer-title`).textContent,
+          price: Number(item.querySelector(`.event__offer-price`).textContent)
         };
       });
 
