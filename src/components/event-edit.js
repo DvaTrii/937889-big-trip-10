@@ -232,7 +232,6 @@ export default class EventEdit extends AbstractSmartComponent {
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this.setSubmitHandler(this._submitHandler);
     this.setRollupButtonClickHandler(this._rollUpButtonClickHandler);
-    this.setOfferButtonClickHandler(this._setOfferButtonClickHandler);
   }
 
   rerender() {
@@ -309,14 +308,6 @@ export default class EventEdit extends AbstractSmartComponent {
 
   setFavoriteButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, handler);
-  }
-
-  setOfferButtonClickHandler(handler) {
-    this.getElement().querySelectorAll(`.event__offer-checkbox`)
-      .forEach((it) => {
-        it.addEventListener(`click`, handler);
-      });
-    this._setOfferButtonClickHandler = handler;
   }
 
   setDeleteButtonClickHandler(handler) {

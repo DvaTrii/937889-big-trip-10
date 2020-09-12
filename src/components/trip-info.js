@@ -37,9 +37,8 @@ export default class TripInfo extends AbstractSmartComponent {
 
   _countPrice(data) {
     const pointsPrice = (points) => points.reduce((acc, {price}) => acc + Number(price), 0);
-    const allOffersPrice = (points) => points.map((point) => point.offers.filter((offer) => offer.isChecked)
-      .reduce((accum, {offerPrice}) => accum + Number(offerPrice), 0))
-      .reduce((acc, price) => acc + price, 0);
+    const allOffersPrice = (points) => points.map((point) => point.offers.map((offer) => offer.price))
+      .reduce((acc, item) => acc + item.reduce((res, price) => res + price, 0), 0);
 
     return pointsPrice(data) + allOffersPrice(data);
   }
