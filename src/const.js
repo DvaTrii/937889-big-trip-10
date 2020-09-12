@@ -21,3 +21,7 @@ export const MenuItems = {
   TABLE: `Table`,
   STATS: `Stats`,
 };
+
+export const AUTHORIZATION = `Basic dXNchar9yZAo=`;
+
+export const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
