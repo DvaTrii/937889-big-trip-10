@@ -37,7 +37,7 @@ const createPhotoMarkup = (photo) => {
 };
 
 const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, pointPhotos, pointDescription, mode) => {
-  const {place, startDate, endDate, price, offers, description, isFavorite, photos} = dayEvent;
+  const {startDate, endDate, price, isFavorite} = dayEvent;
 
   const offersMarkup = pointOffers.map((it, index) => createOfferMarkup(it, index)).join(`\n`);
 
@@ -173,9 +173,9 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, p
           <span class="visually-hidden">Open event</span>
         </button>` : ``}
       </header>
-      ${place ? `<section class="event__details">
+      ${pointPlace ? `<section class="event__details">
 
-        ${offers ? `<section class="event__section  event__section--offers">
+        ${pointOffers ? `<section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
@@ -185,11 +185,11 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, p
           </div>
         </section>` : ``}
 
-        ${description ? `<section class="event__section  event__section--destination">
+        ${pointDescription ? `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${pointDescription}</p>
 
-          ${photos ? `<div class="event__photos-container">
+          ${pointPhotos ? `<div class="event__photos-container">
             <div class="event__photos-tape">
 
               ${photosMarkup}
