@@ -108,8 +108,8 @@ export default class PointController {
           remove(oldEventComponent);
           remove(oldEventEditComponent);
         }
-        // this._eventEditComponent.reset();
-        // this._onViewChange();
+        this._eventEditComponent.reset();
+        this._onViewChange();
         document.addEventListener(`keydown`, this._onEscKeyDown);
         render(document.querySelector(`.trip-days`), this._eventEditComponent, RenderPosition.AFTERBEGIN);
         this._mode = Mode.ADDING;
@@ -132,7 +132,6 @@ export default class PointController {
 
   _replaceEventToEdit() {
     this._onViewChange();
-
     replace(this._eventEditComponent, this._eventComponent);
     this._mode = Mode.EDIT;
   }
