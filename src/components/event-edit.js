@@ -359,6 +359,8 @@ export default class EventEdit extends AbstractSmartComponent {
 
       this._pointDescription = Store.getDestinations().find((destination) => destination.name === this._pointPlace).description;
 
+      this._pointOffers = Store.getOffers().find((offers) => offers.type === this._pointType).offers;
+
       this.rerender();
     });
   }
