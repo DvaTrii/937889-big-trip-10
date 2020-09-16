@@ -143,9 +143,12 @@ export default class TripController {
         pointController.destroy();
         this._updatePoints();
       } else {
-        this._pointsModel.addPoint(newData);
-        this._showedPointControllers = [].concat(pointController, this._showedPointControllers);
-        this._updatePoints();
+        this._api.createPoint(newData)
+          .then((pointModel) => {
+            this._pointsModel.addPoint(pointModel);
+            this._showedPointControllers = [].concat(pointController, this._showedPointControllers);
+            this._updatePoints();
+          });
       }
     } else if (newData === null) {
       this._pointsModel.removePoint(oldData.id);
