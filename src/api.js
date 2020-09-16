@@ -69,6 +69,13 @@ const API = class {
       .then(Point.parsePoint);
   }
 
+  deletePoint(id) {
+    return this._load({
+      url: `points/${id}`,
+      method: Method.DELETE
+    });
+  }
+
   getAllData() {
     return [
       this._getPoints(),
