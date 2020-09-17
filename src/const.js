@@ -25,3 +25,5 @@ export const MenuItems = {
 export const AUTHORIZATION = `Basic dXNchar9yZAo=`;
 
 export const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
+
+export const SHAKE_ANIMATION_TIMEOUT = 600;

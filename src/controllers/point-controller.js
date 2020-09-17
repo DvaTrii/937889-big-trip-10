@@ -3,6 +3,7 @@ import EventEditComponent from "../components/event-edit.js";
 import {render, remove, replace, RenderPosition} from "../utils/render.js";
 import PointContainer from '../components/event-container.js';
 import PointModel from "../models/point-model";
+import {SHAKE_ANIMATION_TIMEOUT} from "../const";
 
 export const Mode = {
   ADDING: `adding`,
@@ -128,6 +129,16 @@ export default class PointController {
     remove(this._eventEditComponent);
     remove(this._eventComponent);
     document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
+  shake() {
+    this._eventEditComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+    this._eventComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+
+    setTimeout(() => {
+      this._eventEditComponent.getElement().style.animation = ``;
+      this._eventComponent.getElement().style.animation = ``;
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _replaceEventToEdit() {
