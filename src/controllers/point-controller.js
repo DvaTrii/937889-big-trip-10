@@ -84,11 +84,20 @@ export default class PointController {
     this._eventEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       const data = parseFormData(this._eventEditComponent.getData());
+
+      this._eventEditComponent.setData({
+        saveButtonText: `Saving...`,
+      });
+
       this._onDataChange(this, point, data);
       newEventButton.disabled = false;
     });
 
     this._eventEditComponent.setDeleteButtonClickHandler(() => {
+      this._eventEditComponent.setData({
+        deleteButtonText: `Deleting...`,
+      });
+
       this._onDataChange(this, point, null);
       newEventButton.disabled = false;
     });
@@ -138,6 +147,11 @@ export default class PointController {
     setTimeout(() => {
       this._eventEditComponent.getElement().style.animation = ``;
       this._eventComponent.getElement().style.animation = ``;
+
+      this._eventEditComponent.setData({
+        saveButtonText: `Save`,
+        deleteButtonText: `Delete`,
+      });
     }, SHAKE_ANIMATION_TIMEOUT);
   }
 

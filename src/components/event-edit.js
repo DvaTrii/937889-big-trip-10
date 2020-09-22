@@ -8,6 +8,11 @@ import Store from "../store.js";
 import {pointType} from "../const.js";
 import {Mode as PointControllerMode} from "../controllers/point-controller.js";
 
+const DefaultData = {
+  deleteButtonText: `Delete`,
+  saveButtonText: `Save`
+};
+
 const createOfferMarkup = (offer, index) => {
   const {title, price} = offer;
   return (
@@ -36,7 +41,7 @@ const createPhotoMarkup = (photo) => {
   );
 };
 
-const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, pointPhotos, pointDescription, mode) => {
+const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, pointPhotos, pointDescription, mode, externalData) => {
   const {startDate, endDate, price, isFavorite} = dayEvent;
 
   const offersMarkup = pointOffers.map((it, index) => createOfferMarkup(it, index)).join(`\n`);
@@ -44,6 +49,9 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, p
   const photosMarkup = pointPhotos.map((it) => createPhotoMarkup(it)).join(`\n`);
 
   const citiesMarkup = Store.getDestinations().map((it) => createDestinationMarkup(it.name)).join(`\n`);
+
+  const deleteButtonText = externalData.deleteButtonText;
+  const saveButtonText = externalData.saveButtonText;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -158,8 +166,8 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, p
           <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
         </div>
 
-        <button class="event__save-btn  btn  btn--blue" type="submit" ${pointPlace ? `` : `disabled`}>Save</button>
-        <button class="event__reset-btn" type="reset">Delete</button>
+        <button class="event__save-btn  btn  btn--blue" type="submit" ${pointPlace ? `` : `disabled`}>${saveButtonText}</button>
+        <button class="event__reset-btn" type="reset">${deleteButtonText}</button>
         <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite"
         ${isFavorite ? `checked` : ``}>
         <label class="event__favorite-btn" for="event-favorite-1">
@@ -215,6 +223,7 @@ export default class EventEdit extends AbstractSmartComponent {
     this._pointId = point.id;
 
     this._mode = mode;
+    this._externalData = DefaultData;
 
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -258,7 +267,15 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._point, this._pointType, this._pointPlace, this._pointOffers, this._pointPhotos, this._pointDescription, this._mode);
+    return createEditEventTemplate(
+        this._point,
+        this._pointType,
+        this._pointPlace,
+        this._pointOffers,
+        this._pointPhotos,
+        this._pointDescription,
+        this._mode,
+        this._externalData);
   }
 
   getData() {
@@ -291,6 +308,11 @@ export default class EventEdit extends AbstractSmartComponent {
       description,
       id: this._pointId
     };
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerender();
   }
 
   setSubmitHandler(handler) {
