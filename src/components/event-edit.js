@@ -4,20 +4,24 @@ import "flatpickr/dist/themes/light.css";
 
 import {formatDateTime} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component";
+import Store from "../store.js";
 import {pointType} from "../const.js";
-import {CITIES} from "../mock/mock.js";
 import {Mode as PointControllerMode} from "../controllers/point-controller.js";
 
-const createOfferMarkup = (offer) => {
-  const {offerType, title, offerPrice, isChecked} = offer;
+const DefaultData = {
+  deleteButtonText: `Delete`,
+  saveButtonText: `Save`
+};
 
+const createOfferMarkup = (offer, index) => {
+  const {title, price} = offer;
   return (
     `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}" ${isChecked ? `checked` : ``}>
-        <label class="event__offer-label" for="event-offer-${offerType}-1">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-type-${index}" type="checkbox" name="event-offer-type" checked>
+        <label class="event__offer-label" for="event-offer-type-${index}">
           <span class="event__offer-title">${title}</span>
           &plus;
-          &euro;&nbsp;<span class="event__offer-price">${offerPrice}</span>
+          &euro;&nbsp;<span class="event__offer-price">${price}</span>
         </label>
       </div>`
   );
@@ -29,20 +33,25 @@ const createDestinationMarkup = (city) => {
   );
 };
 
-const createPhotoMarkup = (photoSource) => {
+const createPhotoMarkup = (photo) => {
+  const {description, src} = photo;
+
   return (
-    `<img class="event__photo" src="${photoSource}" alt="Event photo">`
+    `<img class="event__photo" src="${src}" alt="${description}">`
   );
 };
 
-const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
-  const {place, startDate, endDate, price, offers, description, isFavorite, photos} = dayEvent;
+const createEditEventTemplate = (dayEvent, eventType, pointPlace, pointOffers, pointPhotos, pointDescription, mode, externalData) => {
+  const {startDate, endDate, price, isFavorite} = dayEvent;
 
-  const offersMarkup = offers.map((it) => createOfferMarkup(it)).join(`\n`);
+  const offersMarkup = pointOffers.map((it, index) => createOfferMarkup(it, index)).join(`\n`);
 
-  const photosMarkup = photos.map((it) => createPhotoMarkup(it)).join(`\n`);
+  const photosMarkup = pointPhotos.map((it) => createPhotoMarkup(it)).join(`\n`);
 
-  const citiesMarkup = CITIES.map((it) => createDestinationMarkup(it)).join(`\n`);
+  const citiesMarkup = Store.getDestinations().map((it) => createDestinationMarkup(it.name)).join(`\n`);
+
+  const deleteButtonText = externalData.deleteButtonText;
+  const saveButtonText = externalData.saveButtonText;
 
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -129,7 +138,7 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
           <label class="event__label  event__type-output" for="event-destination-1">
             ${pointType[eventType]}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${place}" list="destination-list-1">
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${pointPlace}" list="destination-list-1">
           <datalist id="destination-list-1">
             ${citiesMarkup}
           </datalist>
@@ -157,8 +166,8 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
           <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
         </div>
 
-        <button class="event__save-btn  btn  btn--blue" type="submit" ${pointPlace ? `` : `disabled`}>Save</button>
-        <button class="event__reset-btn" type="reset">Delete</button>
+        <button class="event__save-btn  btn  btn--blue" type="submit" ${pointPlace ? `` : `disabled`}>${saveButtonText}</button>
+        <button class="event__reset-btn" type="reset">${deleteButtonText}</button>
         <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite"
         ${isFavorite ? `checked` : ``}>
         <label class="event__favorite-btn" for="event-favorite-1">
@@ -172,9 +181,9 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
           <span class="visually-hidden">Open event</span>
         </button>` : ``}
       </header>
-      ${place ? `<section class="event__details">
+      ${pointPlace ? `<section class="event__details">
 
-        ${offers ? `<section class="event__section  event__section--offers">
+        ${pointOffers ? `<section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
           <div class="event__available-offers">
@@ -184,36 +193,22 @@ const createEditEventTemplate = (dayEvent, eventType, pointPlace, mode) => {
           </div>
         </section>` : ``}
 
-        ${description ? `<section class="event__section  event__section--destination">
+        ${pointDescription ? `<section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${description}</p>
+          <p class="event__destination-description">${pointDescription}</p>
 
-          <div class="event__photos-container">
+          ${pointPhotos ? `<div class="event__photos-container">
             <div class="event__photos-tape">
 
               ${photosMarkup}
 
             </div>
-          </div>
+          </div>` : ``}
+
         </section>` : ``}
       </section>` : ``}
     </form>`
   );
-};
-
-const parseFormData = (formData, offers, photos, description, id) => {
-  return {
-    type: formData.get(`event-type`),
-    place: formData.get(`event-destination`),
-    startDate: formData.get(`event-start-time`),
-    endDate: formData.get(`event-end-time`),
-    price: formData.get(`event-price`),
-    offers, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время через offers.map(offer => offer.checked)
-    photos, // записываем временно так как по сети придут другие и парсит из моков не нужно тратить время
-    description,
-    id,
-    isFavorite: !!formData.get(`event-favorite`),
-  };
 };
 
 export default class EventEdit extends AbstractSmartComponent {
@@ -228,6 +223,7 @@ export default class EventEdit extends AbstractSmartComponent {
     this._pointId = point.id;
 
     this._mode = mode;
+    this._externalData = DefaultData;
 
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -245,7 +241,6 @@ export default class EventEdit extends AbstractSmartComponent {
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this.setSubmitHandler(this._submitHandler);
     this.setRollupButtonClickHandler(this._rollUpButtonClickHandler);
-    this.setOfferButtonClickHandler(this._setOfferButtonClickHandler);
   }
 
   rerender() {
@@ -272,13 +267,52 @@ export default class EventEdit extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createEditEventTemplate(this._point, this._pointType, this._pointPlace, this._mode);
+    return createEditEventTemplate(
+        this._point,
+        this._pointType,
+        this._pointPlace,
+        this._pointOffers,
+        this._pointPhotos,
+        this._pointDescription,
+        this._mode,
+        this._externalData);
   }
 
   getData() {
-    const formData = new FormData(this.getElement());
+    const form = this.getElement();
+    const formData = new FormData(form);
 
-    return parseFormData(formData, this._pointOffers, this._pointPhotos, this._pointDescription, this._pointId);
+    const offers = Array.from(document.querySelectorAll(`.event__offer-selector`))
+      .filter((offer) => offer.querySelector(`.event__offer-checkbox`).checked)
+      .map((item) => {
+        return {
+          title: item.querySelector(`.event__offer-title`).textContent,
+          price: Number(item.querySelector(`.event__offer-price`).textContent)
+        };
+      });
+
+    const photos = Array.from(document.querySelectorAll(`.event__photo`))
+      .map((item) => {
+        return {
+          src: item.src,
+          description: item.alt
+        };
+      });
+
+    const description = form.querySelector(`.event__destination-description`).textContent;
+
+    return {
+      formData,
+      offers,
+      photos,
+      description,
+      id: this._pointId
+    };
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerender();
   }
 
   setSubmitHandler(handler) {
@@ -296,14 +330,6 @@ export default class EventEdit extends AbstractSmartComponent {
 
   setFavoriteButtonClickHandler(handler) {
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, handler);
-  }
-
-  setOfferButtonClickHandler(handler) {
-    this.getElement().querySelectorAll(`.event__offer-checkbox`)
-      .forEach((it) => {
-        it.addEventListener(`click`, handler);
-      });
-    this._setOfferButtonClickHandler = handler;
   }
 
   setDeleteButtonClickHandler(handler) {
@@ -338,12 +364,26 @@ export default class EventEdit extends AbstractSmartComponent {
       if (evt.target.tagName === `INPUT`) {
         this._pointType = evt.target.value;
 
+        this._pointOffers = Store.getOffers().find((offer) => offer.type === this._pointType).offers;
+
         this.rerender();
       }
     });
 
     element.querySelector(`.event__input`).addEventListener(`input`, (evt) => {
       element.querySelector(`.event__save-btn`).disabled = evt.target.value.length <= 0;
+    });
+
+    element.querySelector(`.event__input--destination`).addEventListener(`change`, (evt) => {
+      this._pointPlace = evt.target.value;
+
+      this._pointPhotos = Store.getDestinations().find((destination) => destination.name === this._pointPlace).pictures;
+
+      this._pointDescription = Store.getDestinations().find((destination) => destination.name === this._pointPlace).description;
+
+      this._pointOffers = Store.getOffers().find((offers) => offers.type === this._pointType).offers;
+
+      this.rerender();
     });
   }
 }

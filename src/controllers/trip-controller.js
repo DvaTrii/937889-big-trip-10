@@ -46,16 +46,17 @@ const renderPoints = (
 };
 
 export default class TripController {
-  constructor(container, pointsModel) {
+  constructor(container, pointsModel, api) {
     this._container = container;
     this._pointsModel = pointsModel;
+    this._api = api;
     this._showedPointControllers = [];
-    this._points = this._pointsModel.getPoints();
+    this._points = [];
     this._creatingPoint = null;
 
     this._noEventsComponent = new NoEventsComponent();
     this._sorterComponent = new SorterComponent();
-    this._tripInfoComponent = new TripInfoComponent(this._points);
+    this._tripInfoComponent = null;
     this._tripContainerComponent = new TripContainerComponent();
     this._siteTripElement = document.querySelector(`.trip-main`);
 
@@ -77,10 +78,13 @@ export default class TripController {
 
 
   render() {
+    this._points = this._pointsModel.getPoints();
+
     if (this._points.length === 0) {
       render(this._container, this._noEventsComponent, RenderPosition.BEFOREEND);
     } else {
 
+      this._tripInfoComponent = new TripInfoComponent(this._points);
       render(this._siteTripElement, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
       render(this._container, this._sorterComponent, RenderPosition.BEFOREEND);
       render(this._container, this._tripContainerComponent, RenderPosition.BEFOREEND);
@@ -139,19 +143,38 @@ export default class TripController {
         pointController.destroy();
         this._updatePoints();
       } else {
-        this._pointsModel.addPoint(newData);
-        this._showedPointControllers = [].concat(pointController, this._showedPointControllers);
-        this._updatePoints();
+        this._api.createPoint(newData)
+          .then((pointModel) => {
+            this._pointsModel.addPoint(pointModel);
+            this._showedPointControllers = [].concat(pointController, this._showedPointControllers);
+            this._updatePoints();
+          })
+          .catch(() => {
+            pointController.shake();
+          });
       }
     } else if (newData === null) {
-      this._pointsModel.removePoint(oldData.id);
-      this._updatePoints();
+      this._api.deletePoint(oldData.id)
+        .then(() => {
+          this._pointsModel.removePoint(oldData.id);
+          this._updatePoints();
+        })
+        .catch(() => {
+          pointController.shake();
+        });
     } else {
-      const isSuccess = this._pointsModel.updatePoint(oldData.id, newData);
-      if (isSuccess) {
-        pointController.render(newData, PointControllerMode.DEFAULT);
-        this._tripInfoComponent.setNewPrice(this._pointsModel.getPoints());
-      }
+      this._api.updatePoint(oldData.id, newData)
+        .then((pointModel) => {
+          const isSuccess = this._pointsModel.updatePoint(oldData.id, pointModel);
+
+          if (isSuccess) {
+            pointController.render(pointModel, PointControllerMode.DEFAULT);
+            this._tripInfoComponent.setNewPrice(this._pointsModel.getPoints());
+          }
+        })
+        .catch(() => {
+          pointController.shake();
+        });
     }
   }
 

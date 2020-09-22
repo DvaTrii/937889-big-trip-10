@@ -3,13 +3,13 @@ import AbstractComponent from "./abstract-component.js";
 import {pointType} from "../const.js";
 
 const createOfferMarkup = (offer) => {
-  const {title, offerPrice, isChecked} = offer;
-  return (isChecked ?
+  const {price, title} = offer;
+  return (
     `<li class="event__offer">
           <span class="event__offer-title">${title}</span>
           &plus;
-          &euro;&nbsp;<span class="event__offer-price">${offerPrice}</span>
-       </li>` : ``);
+          &euro;&nbsp;<span class="event__offer-price">${price}</span>
+       </li>`);
 };
 
 const createEventItemTemplate = (dayEvent) => {
